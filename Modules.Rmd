@@ -1,0 +1,660 @@
+---
+title: "Introduction to *Shiny* Modules"
+output: html_document
+runtime: shiny
+---
+
+## Introduction
+
+This document is intended to be an introduction to the most common features of *Shiny* modules in R. There will be many features which are not covered by this tutorial, but this should be sufficient to get started using modules. Each section introduces a new concept, so it should be possible to step through this document, expanding you understanding incrementally as you progress. You can edit the code and run it yourself to experiment with how features work and interact.
+
+Note that each code snippet has the global object names prefixed with the example number. This is only to stop each example from clashing with the others in the global R environment.
+
+### What Are Modules, and Why Should I Use Them?
+
+A *Shiny* module is a self-contained piece of app functionality which provides some UI (User Interface) elements, and some server code. These can be an entire page, a single panel, or a single element, but they are intended to be small, and easy to read and understand.
+
+Writing a simple *Shiny* app can be done in a single file which contains the `ui` function and the `server` function. This is easy to get started, and is easy to read, as all of the visual elements and the server code are stored together. When an app starts to get bigger, the `ui` and `server` functions are usually split out into dedicated files. This makes it a bit harder to read the code, as you need to switch between 2 files, but it is not too much of a problem. When this app gets even bigger, problems start to arise.
+
+*Shiny* modules solve multiple problems which arise when writing apps:
+
+- Large complex files
+  - A large app can have thousands of lines of code, and when a developer comes to edit the code, they must first find the section which they need to change. This can be very difficult and time consuming.
+  - If the app had been broken down into smaller modules, then the code can be found easily by finding the file which contains the relevant code. This does rely on files being named well, so use a sensible naming scheme.
+- Clashing element IDs
+  - A large app can have hundreds of individual inputs and outputs, and each one must have a unique ID. Sometimes multiple elements could sensibly be given the same name, but this would result in the server using the wrong input, or rendering something to the wrong place.
+  - Within a module, each element must have a unique ID, but this can be the same as the ID within another module, so the scope for keeping uniqueness is only within a single, manageable file. This concept is known as a "namespace", and is described in greater detail later.
+- Reusing code
+  - Often an app will want to use elements, or entire panels, in multiple places around the app, on pages which do similar things. Often this will result in developers simply copying and pasting the code multiple times around the codebase. This adds unnecessary bloat to the code, and means that any changes to that element must be done multiple times. Often some of those pasted areas will be missed, and the app will become inconsistent with itself.
+  - If these elements had been separated out into a module, then reusing it is as simple as a single-line call where it is to be included. It would also mean that any changes to the module would be applied everywhere that the module is used, because they all use the same code.
+
+You may be thinking "*I'm not writing a big app. My app will be small and limited in its functionality*". This is a *very* common pitfall. Projects always start small, but they almost always grow far beyond their original scope as the requirements change, and the potential of the app is understood. Modules might seem like unnecessary extra work at the beginning, but it will save you a lot of work and frustration later down the line if you adopt them early.
+
+### Namespaces
+
+In a simple *Shiny* application, all UI elements must have a unique ID. This is so that the server knows which element should be used to get a value or render something. If 2 elements had the same UI, then the server might get the wrong value, or render something in the wrong place. This is fine for small applications, but it becomes more difficult in larger applications. It also means that code cannot be easily reused, because IDs are usually hard-coded.
+
+Computer scientists devised a way to get around this issue by using something called a "namespace". This is a conceptual division in the global set of IDs, where an ID must be unique within a single namespace, but it can be the same as an ID in another namespace. In practice, what this means for a *Shiny* module is that the IDs used in a module cannot clash with IDs outside of that module. It also means that a module can be reused infinitely many times, as long as each instance of the module has a unique namespace.
+
+## Getting Started with Modules
+
+This section shows a series of examples, each of which builds upon the previous examples, to demonstrate the core functionality provided by using modules.
+
+### Basic App Without Modules
+
+The following app comprises a simple page with one text input, one button and one text output. When the button is clicked, the text in the input is printed to the output.
+
+```{r}
+library(shiny)
+
+example1_ui <- {
+  fluidPage(
+    textInput(inputId = "master_text", label = "Master Text:", value = "INITIAL_VALUE"),
+    actionButton(inputId = "btn", label = "Print Master Text"),
+    textOutput(outputId = "t_out")
+  )
+}
+
+example1_server <- function(input, output) {
+  print_text <- reactiveVal()
+  observeEvent(
+    input$btn,
+    {
+      print_text(paste0("Master text = '", input$master_text, "'"))
+    }
+  )
+
+  output$t_out <- renderText({
+    print_text()
+  })
+}
+
+shinyApp(ui = example1_ui, server = example1_server)
+```
+
+### Simple App in a Module
+
+The simplest way to introduce a module is to move the entire contents of this app into a single module. Everything should work as it did before, but now everything is contained within a module.
+
+```{r}
+library(shiny)
+
+##########
+# Module #
+##########
+
+example2_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("master_text"), label = "Master Text:", value = "INITIAL_VALUE"),
+    actionButton(inputId = ns("btn"), label = "Print Master Text"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example2_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    print_text <- reactiveVal()
+    observeEvent(
+      input$btn,
+      {
+        print_text(paste0("Master text = '", input$master_text, "'"))
+      }
+    )
+  
+    output$t_out <- renderText({
+      print_text()
+    })
+  })
+}
+
+#######
+# App #
+#######
+
+example2_main_ui <- {
+  fluidPage(
+    example2_module_ui("my_module")
+  )
+}
+
+example2_main_server <- function(input, output) {
+  example2_module_server("my_module")
+}
+
+shinyApp(ui = example2_main_ui, server = example2_main_server)
+```
+
+#### What has changed?
+- `example2_module_ui`
+  - All UI elements in the module are now wrapped in a `div`.
+    - Notice that the main `ui` still uses a `fluidPage`.
+    - A module UI must return a single element, but the page is at the top level. To gather all of the elements in the module, we use a `div`. This is a simple container which, by default, does not change how any element is rendered.
+  - All UI element IDs are now wrapped in `ns()`.
+    - This might look like unnecessary extra code, but it is, in fact, one of the main strengths of using modules: namespaces.
+    - See the introduction for an explanation of namespaces.
+- `example2_module_server`
+  - All of the server code is now wrapped in `shiny::moduleServer()`
+    - This takes care of the namespacing, and allows for the rest of the server code to remain unchanged.
+- `example2_main_ui`
+  - Renamed from `example1_ui` for clarity.
+  - Now calls to `example2_module_ui` within the `fluidPage`.
+    - Since this is the top level of the app, this uses the global namespace, so `ns()` is not used.
+- `example2_main_server`
+  - Renamed from `example1_server` for clarity.
+  - Now calls to `example2_module_server` using the same ID as in the UI.
+
+### Nested Modules
+
+Let's suppose that we want to add some more functionality to our app, but it can be logically separated as a self-contained panel. We can name another module and call it from inside our original module. This inner module simply prints whatever is typed into a text input.
+
+```{r}
+library(shiny)
+
+################
+# Inner Module #
+################
+
+example3_inner_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("inner_text"), label = "Inner Text:"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example3_inner_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    text <- reactive({
+      input$inner_text
+    })
+  
+    output$t_out <- renderText({
+      text()
+    })
+  })
+}
+
+################
+# Outer Module #
+################
+
+example3_outer_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("master_text"), label = "Master Text:", value = "INITIAL_VALUE"),
+    example3_inner_module_ui(id = ns("inner")),
+    actionButton(inputId = ns("btn"), label = "Print Master Text"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example3_outer_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    example3_inner_module_server(id = "inner")
+  
+    print_text <- reactiveVal()
+    observeEvent(
+      input$btn,
+      {
+        print_text(paste0("Master text = '", input$master_text, "'"))
+      }
+    )
+    
+    output$t_out <- renderText({
+      print_text()
+    })
+  })
+}
+
+#######
+# App #
+#######
+
+example3_main_ui <- {
+  fluidPage(
+    example3_outer_module_ui("outer")
+  )
+}
+
+example3_main_server <- function(input, output) {
+  example3_outer_module_server("outer")
+}
+
+shinyApp(ui = example3_main_ui, server = example3_main_server)
+```
+
+#### What has changed?
+- `example3_outer_module_ui`
+  - Renamed from `example2_module_ui` for clarity.
+  - Added call to `example3_inner_module_ui` to add the UI elements of the inner module.
+    - Notice that the ID is wrapped in `ns()`
+- `example3_outer_module_server`
+  - Renamed from `example2_module_server` for clarity.
+  - Added call to `example3_inner_module_server` to add the server code of the inner module.
+    - Notice that the ID is identical to that used in the UI.
+- `example3_inner_module_ui`
+  - Normal UI code, as seen in previous.
+- `example3_inner_module_server`
+  - Normal server code, as seen in previous.
+
+### Nested Modules: Passing in Data Objects
+
+This time, the inner module also needs some reactive data from the outer module, so we will pass that data in.
+
+```{r}
+library(shiny)
+
+################
+# Inner Module #
+################
+
+example4_inner_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("inner_text"), label = "Inner Text:"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example4_inner_module_server <- function(id, master_text) {
+  shiny::moduleServer(id, function(input, output, session) {
+    text <- reactive({
+      input$inner_text
+    })
+  
+    output$t_out <- renderText({
+      paste0("Master text = '", master_text(), "'. Inner text = '", text(), "'")
+    })
+  })
+}
+
+################
+# Outer Module #
+################
+
+example4_outer_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("master_text"), label = "Master Text:", value = "INITIAL_VALUE"),
+    example4_inner_module_ui(id = ns("inner_left")),
+    actionButton(inputId = ns("btn"), label = "Print Master Text"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example4_outer_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    master_text <- reactive({ input$master_text })
+    example4_inner_module_server(id = "inner_left", master_text)
+  
+    print_text <- reactiveVal()
+    observeEvent(
+      input$btn,
+      {
+        print_text(paste0("Master text = '", input$master_text, "'"))
+      }
+    )
+    
+    output$t_out <- renderText({
+      print_text()
+    })
+  })
+}
+
+#######
+# App #
+#######
+
+example4_main_ui <- {
+  fluidPage(
+    example4_outer_module_ui("outer")
+  )
+}
+
+example4_main_server <- function(input, output) {
+  example4_outer_module_server("outer")
+}
+
+shinyApp(ui = example4_main_ui, server = example4_main_server)
+```
+
+#### What has changed?
+- `example4_inner_module_server`
+  - Now requires a parameter named `master_text`.
+    - This is called in the `render_text` call for `t_out`.
+- `example4_outer_module_server`
+  - Passes a reactive, which returns the value of `input$master_text`, into the call to `example4_inner_module_server()`.
+
+### Passing reactives
+Notice how we have created a new reactive which just wraps `input$master_text` instead of using the input directly, and notice how we passed the reactive without calling it, ie. `master_text` instead of `master_text()`, as we would normally use a reactive. This is because we want to pass the reactive object itself, not just its value.
+If we were to pass `input$master_text` into the module, then it would be evaluated at the point when the module was first called, and it would never change when the master text input changes. Likewise with the created `reactive`, if we were to call that when the module is called, then it would have the same effect.
+Convince yourself by changing the code and seeing what happens. Note that you will need to remove the brackets used to call the `master_text` object within `example4_inner_module_server`, else it will throw an error.
+
+### Nested Modules: Reusing Modules
+
+Now we are going to duplicate the inner module, so that we 2 identical panels, side-by-side.
+
+```{r}
+library(shiny)
+
+################
+# Inner Module #
+################
+
+example5_inner_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("inner_text"), label = "Inner Text:"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example5_inner_module_server <- function(id, master_text) {
+  shiny::moduleServer(id, function(input, output, session) {
+    text <- reactive({
+      input$inner_text
+    })
+  
+    output$t_out <- renderText({
+      paste0("Master text = '", master_text(), "'. Inner text = '", text(), "'")
+    })
+  })
+}
+
+################
+# Outer Module #
+################
+
+example5_outer_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("master_text"), label = "Master Text:", value = "INITIAL_VALUE"),
+    fluidRow(
+      column(
+        6,
+        example5_inner_module_ui(id = ns("inner_left"))
+      ),
+      column(
+        6,
+        example5_inner_module_ui(id = ns("inner_right"))
+      )
+    ),
+    actionButton(inputId = ns("btn"), label = "Print Master Text"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example5_outer_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    master_text <- reactive({ input$master_text })
+    example5_inner_module_server(id = "inner_left", master_text)
+    example5_inner_module_server(id = "inner_right", master_text)
+  
+    print_text <- reactiveVal()
+    observeEvent(
+      input$btn,
+      {
+        print_text(paste0("Master text = '", input$master_text, "'"))
+      }
+    )
+    
+    output$t_out <- renderText({
+      print_text()
+    })
+  })
+}
+
+#######
+# App #
+#######
+
+example5_main_ui <- {
+  fluidPage(
+    example5_outer_module_ui("outer")
+  )
+}
+
+example5_main_server <- function(input, output) {
+  example5_outer_module_server("outer")
+}
+
+shinyApp(ui = example5_main_ui, server = example5_main_server)
+```
+
+#### What has changed?
+- `example5_outer_module_ui`
+  - `example5_inner_module_ui()` is now called twice within `column`s and a `fluidRow`.
+    - Note that the 2 calls to the inner module have unique IDs.
+- `example5_outer_module_server`
+  - Calls to `example5_inner_module_server()` twice, once with each ID used in the UI.
+
+Notice that the text output from each module only responds to changes to the text input in that same module, and it ignores changes to the other module. This is thanks to the unique namespaces used by the 2 modules, stemming from the unique IDs used to create them.
+
+### Nested Modules: Returning Data
+
+Sometimes we will need to get data out of a module, to be used in a module further up the chain. In this example we will print the text from the inner modules along with the master text when the button is clicked.
+
+```{r}
+library(shiny)
+
+################
+# Inner Module #
+################
+
+example6_inner_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("inner_text"), label = "Inner Text:"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example6_inner_module_server <- function(id, master_text) {
+  shiny::moduleServer(id, function(input, output, session) {
+    text <- reactive({
+      input$inner_text
+    })
+  
+    output$t_out <- renderText({
+      paste0("Master text = '", master_text(), "'. Inner text = '", text(), "'")
+    })
+    
+    return(text)
+  })
+}
+
+################
+# Outer Module #
+################
+
+example6_outer_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("master_text"), label = "Master Text:", value = "INITIAL_VALUE"),
+    fluidRow(
+      column(
+        6,
+        example6_inner_module_ui(id = ns("inner_left"))
+      ),
+      column(
+        6,
+        example6_inner_module_ui(id = ns("inner_right"))
+      )
+    ),
+    actionButton(inputId = ns("btn"), label = "Print Master Text"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example6_outer_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    master_text <- reactive({ input$master_text })
+    left_text <- example6_inner_module_server(id = "inner_left", master_text)
+    right_text <- example6_inner_module_server(id = "inner_right", master_text)
+    
+    print_text <- reactiveVal()
+    observeEvent(
+      input$btn,
+      {
+        print_text(
+          paste0("Master text = '", input$master_text, "'. Left text = '", left_text(), "'. Right text = '", right_text(), "'")
+        )
+      }
+    )
+  
+    output$t_out <- renderText({
+      print_text()
+    })
+  })
+}
+
+#######
+# App #
+#######
+
+example6_main_ui <- {
+  fluidPage(
+    example6_outer_module_ui("outer")
+  )
+}
+
+example6_main_server <- function(input, output) {
+  example6_outer_module_server("outer")
+}
+
+shinyApp(ui = example6_main_ui, server = example6_main_server)
+```
+
+#### What has changed?
+- `example6_inner_module_server`
+  - Returns the `text` reactive.
+    - Notice, again, that it is not evaluated at this point. ie. the return is `text` instead of `text()`.
+    - Try changing this to evaluating the reactive, to prove that the behaviour changes to no longer update when the text input updates.
+- `example6_outer_module_server`
+  - Clicking the button now prints out the text from the inner modules too.
+
+### Nested Modules: Returning Multiple Data Objects
+
+Sometimes we will need to get multiple reactive data objects out of a module, to be used in a module further up the chain. In this example we will add a numerical input as well as the text input.
+
+```{r}
+library(shiny)
+
+################
+# Inner Module #
+################
+
+example7_inner_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("inner_text"), label = "Inner Text:"),
+    numericInput(inputId = ns("inner_number"), label = "Inner Number:", value = 1),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example7_inner_module_server <- function(id, master_text) {
+  shiny::moduleServer(id, function(input, output, session) {
+    text <- reactive({
+      input$inner_text
+    })
+    number <- reactive({
+      input$inner_number
+    })
+  
+    output$t_out <- renderText({
+      paste0("Master text = '", master_text(), "'. Inner text = '", text(), "'")
+    })
+    
+    return(list(text = text, number = number))
+  })
+}
+
+################
+# Outer Module #
+################
+
+example7_outer_module_ui <- function(id) {
+  ns = shiny::NS(id)
+  div(
+    textInput(inputId = ns("master_text"), label = "Master Text:", value = "INITIAL_VALUE"),
+    fluidRow(
+      column(
+        6,
+        example7_inner_module_ui(id = ns("inner_left"))
+      ),
+      column(
+        6,
+        example7_inner_module_ui(id = ns("inner_right"))
+      )
+    ),
+    actionButton(inputId = ns("btn"), label = "Print Master Text"),
+    textOutput(outputId = ns("t_out"))
+  )
+}
+
+example7_outer_module_server <- function(id) {
+  shiny::moduleServer(id, function(input, output, session) {
+    master_text <- reactive({ input$master_text })
+    left_returns <- example7_inner_module_server(id = "inner_left", master_text)
+    right_returns <- example7_inner_module_server(id = "inner_right", master_text)
+    
+    left_text <- left_returns$text
+    left_number <- left_returns$number
+    right_text <- right_returns$text
+    right_number <- right_returns$number
+    
+    print_text <- reactiveVal()
+    observeEvent(
+      input$btn,
+      {
+        print_text(
+          paste0(
+            "Master text = '", input$master_text, "'",
+            ". Left = ('", left_text(), "', ", left_number(), ")",
+            ". Right = ('", right_text(), "', ", right_number(), ")")
+        )
+      }
+    )
+  
+    output$t_out <- renderText({
+      print_text()
+    })
+  })
+}
+
+#######
+# App #
+#######
+
+example7_main_ui <- {
+  fluidPage(
+    example7_outer_module_ui("outer")
+  )
+}
+
+example7_main_server <- function(input, output) {
+  example7_outer_module_server("outer")
+}
+
+shinyApp(ui = example7_main_ui, server = example7_main_server)
+```
+
+#### What has changed?
+- `example7_inner_module_ui`
+  - Now includes `numericInput`
+- `example7_inner_module_server`
+  - Creates a `reactive` for the number.
+  - Returns a list of reactives instead of a single reactive.
+    - This is required to return multiple objects.
+    - The names of the list items do not have to match the item names, but they should be named such that it is obvious what each item is.
+- `example7_outer_module_server`
+  - The return from the inner module server is now stored, and each item is extracted using `$` notation.
+  - The text and the number from each inner module are printed alongside the master text.
+
+## Conclusion
+
+Hopefully this document has helped you to become familiar with the basic functionality of *Shiny* modules. As explained in the introduction, this is not meant as a comprehensive tutorial on how to use every feature of *Shiny* modules, but it should allow you to develop applications which have sensible divisions of functionality, and which are reusable and maintainable.
+
+As described in the introduction, modules may seem like unnecessary work for a small app, but adopting them early will save a lot of time and frustration for yourself and future developers of your app.
