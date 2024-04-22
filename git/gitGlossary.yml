@@ -1,0 +1,62 @@
+Branch: |
+  Branches are copies of the entire codebase which exist in parallel in a respository.
+  
+Checkout: |
+  
+  
+Clone: |
+  Downloading a copy of an existing repository is called 'cloning'.
+  
+Codebase: |
+  The complete set of files containing the code from which an application or website is built.
+  
+Commit: |
+  A 'commit' is a record of when changes to files are added, or 'committed', to the repository. Before the changes are committed, they are not saved in the version history.
+  
+Conflict: |
+  When changes are made to the same lines in a version-controlled file from multiple sources. Changes must be manually merged to reolve the conflicts.
+  
+Diff: |
+  Short for 'difference'. A record of the changes made to a file between commits.
+  
+Fetch: |
+  In Git, remote changes can be 'fetched', so that they can be inspected before they are merged into the working copy.
+  
+Git: |
+  Git is an application which manages files in version control, keeping track of all changes made to them.
+  
+GitHub: |
+  Github.com is a file hosting service which uses Git to manage version control.
+  
+History: |
+  A record of all versions of the files, and the changes made between them.
+  
+Local: |
+  The changes made and committed on a computer are only found on that 'local' computer, until they are pushed to the 'remote' repository
+  
+Merge: |
+  When changes from one source (repo or branch) are integrated into another.
+  
+Remote: |
+  A 'remote' repository is one which is not found on the local computer, but is stored elsewhere. A common example is a repository hosted on GitHub.com.
+  
+Repository: |
+  A folder on your own computer, or in the cloud, which contains the files and tracks the changes. Sometimes refered to as a 'repo' (REE-po).
+  
+Revert: |
+  When uncommitted changes are discarded, to restore the file(s) back to the most recent commit, they are 'reverted'.
+  
+Pull: |
+  Changes in a remote repository are 'pulled' into the local repository. These remote changes are then found in the local history.
+  
+Pull Request: |
+  
+  
+Push: |
+  Local changes are uploaded, or 'pushed', to a remote repository.
+  
+Source code: |
+  The code from which an application or website is built.
+  
+Stage: |
+  'Staging' local changes marks them as ready for committing. Whole files, or individual changes within a file can be staged.
