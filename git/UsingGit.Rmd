@@ -61,6 +61,12 @@ You may have previously heard about both *Git* and *GitHub*, but the difference 
 
 To put a metaphor on it, *GitHub* could be thought of as a warehouse which stores products (our files); *Git* would be the forklift used to move the products in and out of the warehouse.
 
+## What is *Sourcetree*?
+
+*Git* is often used as a command line tool, but this tutorial will use a graphical application to interact with it. *Sourcetree* simplifies the use of *Git* by allowing users to use a graphical interface, rather than needing to remember commands to be typed into the command line. This also makes it much easier to see changes and to perform more advanced operations.
+
+Some applications have their own integration for *Git*, but many do not. *Sourcetree* is a stand-alone application which allows us to version control our files, while using whichever application we prefer to create and modify those files.
+
 # Download and Install
 
 This section demonstrates how to set up *Git* for a Windows computer, but the steps will be very similar for Macs.
@@ -74,8 +80,6 @@ knitr::include_graphics("images/Software_Git.png")
 ```
 
 ## Download and Install *Sourcetree*
-
-*Git* is often used as a command line tool, but this tutorial will use a graphical program to interact with it. *Sourcetree* simplifies the use of *Git* by allowing users to use a graphical interface, rather than needing to remember commands to be typed into the command line. This also makes it much easier to see changes and to perform more advanced operations.
 
 *Sourcetree* can be installed by downloading it from the [Sourcetree website](https://www.sourcetreeapp.com).
 
