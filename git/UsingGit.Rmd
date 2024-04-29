@@ -21,6 +21,7 @@ glossary::glossary_popup("hover")
 # )
 ```
 
+<!---
 # TODO:
 - [X] Update alt-text for images
 - [X] Move .gitignore section earlier
@@ -32,6 +33,7 @@ glossary::glossary_popup("hover")
 - [X] Branches
 - [X] Make section tags consistent
 - [ ] Make references to buttons and sections consistent
+--->
 
 # Introduction
 
