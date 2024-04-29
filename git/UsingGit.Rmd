@@ -25,7 +25,7 @@ glossary::glossary_popup("hover")
 - [X] Update alt-text for images
 - [X] Move .gitignore section earlier
 - [X] Add "Other Resources" section (with emails)
-- [ ] Add windows credentials section
+- [X] Add windows credentials section
 - [ ] Fix glossary
 - [X] Make references to *Git*, *GitHub* and *Sourcetree* consistent.
 - [X] Revert
@@ -190,6 +190,8 @@ Checking the project on *GitHub* will show that the changes have not yet been up
 
 ## Push Changes to *GitHub* {#push}
 
+### Start Push
+
 Note that in the top-left of the *Sourcetree* window, the *Push* button has a `1` badge on it. This is showing that there is 1 local commit which has not yet been pushed to the remote repository. Clicking that button will open a popup to configure that "push" \@ref(fig:push).
 
 ```{r, label = "push", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "'push' popup in Sourcetree"}
@@ -198,11 +200,41 @@ knitr::include_graphics("images/sourcetree/sourcetree_push.png")
 
 Click the *Push* button, and the commits will be pushed to *GitHub*.
 
-When you push for the first time, you will likely be faced with a window as seen in figure \@ref(fig:credentials) to link your *GitHub* account. Choose *Sign in with your browser* and then simply sign in (if you're already signed in on your web browser you may not need to do anything).
+### Provide Credentials
+
+When you push for the first time, you will need to provide *GitHub* credentials to prove that you have permission to push to the remote repository. When you push subsequent times, the credentials should be stored, so you don't need to enter them again.
+
+#### Windows Credentials Issue
+
+On Windows computers, it is possible that the first push will fail due to the credentials being invalid, as in \@ref(fig:failed-push). This is due to Windows Credentials Manager using the wrong credentials to connect to *GitHub*.
+
+```{r, label = "failed-push", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the GitHub sign in popup"}
+knitr::include_graphics("images/sourcetree/sourcetree_failed_push.png")
+```
+
+To fix this, the credentials should be cleared. Open the Windows Credentials Manager by searching for "credentials" in the task bar, then click "Manage Windows Credentials" to open the manager.
+
+```{r, label = "windows-credentials-search", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Search credentials manager in the windows task bar"}
+knitr::include_graphics("images/windows_credentials_search.png")
+```
+
+The remove any credentials which mention "git", as shown in \@ref(fig:windows-credentials-remove).
+
+```{r, label = "windows-credentials-remove", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Remove credentials from Windows Credentials Manager"}
+knitr::include_graphics("images/windows_credentials_remove.png")
+```
+
+Once this has been done, retry the push.
+
+### Provide GitHub Credentials
+
+You will most likely be faced with a popup as seen in figure \@ref(fig:credentials) to link your *GitHub* account. Choose *Sign in with your browser* and then simply sign in (if you're already signed in on your web browser you may not need to do anything).
 
 ```{r, label = "credentials", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the GitHub sign in popup"}
 knitr::include_graphics("images/sourcetree/sourcetree_github_signin.png")
 ```
+
+### Completed Push
 
 After signing in, the push will complete and *Sourcetree* will return to the "History" tab.
 
