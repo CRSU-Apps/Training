@@ -10,15 +10,13 @@ output:
 ---
 
 ```{r, echo = FALSE, message = FALSE, include = FALSE}
+# To get the glossary working correctly, the {glossary} package must be installed from GitHub
+# remotes::install_github("https://github.com/debruine/glossary")
+# This is because required features are not available in version 1.0.0, and no subsequent releases have been made
+
 library(glossary)
 glossary::glossary_path("gitGlossary.yml")
 glossary::glossary_popup("hover")
-# glossary_style(
-#   color = "purple",
-#   text_decoration = "underline",
-#   def_bg = "#333",
-#   def_color = "white"
-# )
 ```
 
 <!---
@@ -27,7 +25,7 @@ glossary::glossary_popup("hover")
 - [X] Move .gitignore section earlier
 - [X] Add "Other Resources" section (with emails)
 - [X] Add windows credentials section
-- [ ] Fix glossary
+- [X] Fix glossary
 - [X] Make references to *Git*, *GitHub* and *Sourcetree* consistent.
 - [X] Revert
 - [X] Branches
@@ -49,7 +47,7 @@ Version control is a system which records all changes made to documents stored i
 
 ## Why Should I Bother with Version Control?
 
-Having a record of previous versions allows anyone to look through old versions of their projects without needing to keep a local copy of every version they have made. This is especially useful when a new version is found to have new bugs since the last version. The individual changes can be examined to find the source of the problem without the need to look through the entire `r glossary("codebase")`. In particular with *`r glossary("GitHub")`*, when you go to view a commit, it will highlight the changes between versions for you. Furthermore, if needed, `r glossary("Git")` can allow you to revert back to a previous version (although how to do this is not covered in this document).
+Having a record of previous versions allows anyone to look through old versions of their projects without needing to keep a local copy of every version they have made. This is especially useful when a new version is found to have new bugs since the last version. The individual changes can be examined to find the source of the problem without the need to look through the entire `r glossary("codebase")`. In particular with *`r glossary("GitHub")`*, when you go to view a commit, it will highlight the changes between versions for you. Furthermore, if needed, *`r glossary("Git")`* can allow you to revert back to a previous version (although how to do this is not covered in this document).
 
 It also makes it easy to share code around if there is a public repository containing the code.
 
@@ -550,5 +548,6 @@ If you find yourself stuck with any of the topics covered in this document, plea
 
 # Glossary
 ```{r, echo = FALSE, message = FALSE}
+glossary::glossary_load_all("gitGlossary.yml")
 glossary::glossary_table()
 ```

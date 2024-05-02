@@ -2,7 +2,7 @@ Branch: |
   Branches are copies of the entire codebase which exist in parallel in a respository.
   
 Checkout: |
-  
+  When a branch is loaded onto the local computer, it is 'checked out.
   
 Clone: |
   Downloading a copy of an existing repository is called 'cloning'.
@@ -50,7 +50,7 @@ Pull: |
   Changes in a remote repository are 'pulled' into the local repository. These remote changes are then found in the local history.
   
 Pull Request: |
-  
+  A pull request (or "PR") is a request to merge code from one branch into another.
   
 Push: |
   Local changes are uploaded, or 'pushed', to a remote repository.
