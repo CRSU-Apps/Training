@@ -67,7 +67,7 @@ Some applications have their own integration for *Git*, but many do not. *Source
 
 # Download and Install
 
-This section demonstrates how to set up *Git* for a Windows computer, but the steps will be very similar for Macs.
+This section demonstrates how to set up *Git* and *SourceTree* for a Windows computer, but the steps will be very similar for Macs.
 
 ## Download and Install *Git*
 
@@ -79,7 +79,7 @@ knitr::include_graphics("images/Software_Git.png")
 
 ## Download and Install *Sourcetree*
 
-*Sourcetree* can be installed by downloading it from the [Sourcetree website](https://www.sourcetreeapp.com).
+*Sourcetree* can be installed by downloading it from the [Sourcetree website](https://www.sourcetreeapp.com). Make sure to click the *Download for Windows/Mac* button, rather than the *Download for free* button.
 
 ### Registration
 
@@ -101,6 +101,8 @@ knitr::include_graphics("images/sourcetree/sourcetree_install_tools.png")
 
 Finally, *Sourcetree* requires a user name and email address. this is used to sign the commits in *Git*. It is recommended to use your full name without spaces, and your university email address.
 
+You may also be asked about setting up *SSH keys*, simple select the "No" button and move on.
+
 ```{r, label = "preferences", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Preferences step when installing Sourcetree"}
 knitr::include_graphics("images/sourcetree/sourcetree_preferences.png")
 ```
@@ -113,7 +115,7 @@ knitr::include_graphics("images/sourcetree/sourcetree_preferences.png")
 knitr::include_graphics("images/sourcetree/sourcetree_fresh.png")
 ```
 
-# Creating a *GitHub* Repository
+# Creating and Cloning a *GitHub* Repository
 This section will focus on starting a new project. If you have an existing repository that you would like to work on, then skip to \@ref(clone).
 
 ## Create a repository {#new-repo}
@@ -150,9 +152,16 @@ After clicking the *Clone* button, *Sourcetree* will open the project in the cur
 knitr::include_graphics("images/sourcetree/sourcetree_cloned.png")
 ```
 
+### Possible directory error
+If you are using a university laptop, depending on where you clone the repository within your computer, you may get the following error pop up (figure \@ref(fig:directory-error)). If this happens, you'll need to do as they suggest. Open *Git Bash* and type in the text suggested by the error message, then simply hit Enter on your keyboard. 
+
+```{r, label = "directory-error", dpi=110, fig.align = "center", echo = FALSE, fig.cap = "Error pop-up regarding permissions with the chosen directory"}
+knitr::include_graphics("images/sourcetree/sourcetree_source_error.png")
+```
+
 # Preventing File Being Committed {#git-ignore}
 
-When the remote repository was created, a file titled *.gitignore* was created. This file is what *Git* uses to know which files do not need version control. It is not necessary, but will mean that the *Sourcetree* won't get clogged up with files that don't need version control. This file can be edited in a text editor, like any other file. This may include files that automatically generated or managed by other software. A good example of this is editor configuration within the application used to write code. That is data related only to the local setup of the project, and is not needed for someone else to run the code on their own computer. You should also add files that contain sensitive information, such as datasets or keys.
+When the remote repository was created, a file titled *.gitignore* was created. This file is what *Git* uses to know which files do not need version control. It is not necessary, but will mean that the *Sourcetree* won't get clogged up with files that don't need version control. This file can be edited in a text editor, like any other file. This may include files that are automatically generated or managed by other software. A good example of this is the editor configuration within the application used to write code; that is, data related only to the local setup of the project, and is not needed for someone else to run the code on their own computer. You should also add files that contain sensitive information, such as datasets or keys.
 
 Each line in this file names a file, folder or file type to be ignored when committing. All files of a given type can be excluded by using a `*` as a wildcard, eg. `*.xlsx` will ignore all excel spreadsheets.
 
@@ -170,15 +179,19 @@ Open the `README.md` file in any text editor, and add some new text. Next, creat
 knitr::include_graphics("images/sourcetree/sourcetree_files.png")
 ```
 
+Note that you may see different coloured symbols next to each file. An orange square with a pencil indicates that this is an existing file that has been edited. A purple square with a question mark indicates that this file is new since the last commit/push.
+
 Clicking on a changed file will show a diff (Short for "difference") in the right-hand panel, as in \@ref(fig:diff-change).
 
 ```{r, label = "diff-change", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the 'diff' for an updated file"}
 knitr::include_graphics("images/sourcetree/sourcetree_diff_change.png")
 ```
 
-Before committing these changes, they must first be "staged". This means marking the files as ready to be committed. Files can be stage individually or all at once, using the *Stage All* button.
+Before committing these changes, they must first be "staged". This means marking the files as ready to be committed. Files can be stage individually (by selected the grey plus button to the right of each file) or all at once, using the *Stage All* button.
 
 Once all the files are staged, a commit message should be added to the text box at the bottom of the page, then the *Commit* button can be clicked. Often the option to "Push changes automatically to origin/main" will be selected, but at this stage, the file is only committed.
+
+Again, note the different symbols next to the files. The green square with a plus symbol indicates that once committed and pushed, this will be a brand new file with respect to the previous commit/push.
 
 ```{r, label = "staged", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the files staged"}
 knitr::include_graphics("images/sourcetree/sourcetree_staged.png")
@@ -222,7 +235,7 @@ To fix this, the credentials should be cleared. Open the Windows Credentials Man
 knitr::include_graphics("images/windows_credentials_search.png")
 ```
 
-The remove any credentials which mention "git", as shown in \@ref(fig:windows-credentials-remove).
+Then remove any credentials which mention "git", as shown in \@ref(fig:windows-credentials-remove).
 
 ```{r, label = "windows-credentials-remove", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Remove credentials from Windows Credentials Manager"}
 knitr::include_graphics("images/windows_credentials_remove.png")
@@ -256,7 +269,7 @@ knitr::include_graphics("images/github/github_pushed.png")
 
 If changes have been made locally and are deemed to be unnecessary, then they can be 'reverted' back to the state of the most recent commit.
 
-On the *commit* page in *Sourcetree*, right-click on the file to be reverted, and click "Revert". This will discard all changes to that file since the most recent commit.
+On the *commit* page in *Sourcetree*, right-click on the file to be reverted, and click "Revert" (note, it may say "Discard File Changes" instead). This will discard all changes to that file since the most recent commit.
 
 ```{r, label = "revert", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to revert changes in Sourcetree"}
 knitr::include_graphics("images/sourcetree/sourcetree_revert.png")
@@ -300,7 +313,7 @@ knitr::include_graphics("images/sourcetree/sourcetree_fetch.png")
 
 *Sourcetree* will show the *History* tab, selecting and emboldening the commit on which the local changes are based, as in \@ref(fig:fetched).
 
-```{r, label = "fetched", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes fetched, but not integrated into the local repository, shown by the latest changes being higher that the current repository version in the history panel"}
+```{r, label = "fetched", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes fetched, but not integrated into the local repository, shown by the latest changes being higher than the current repository version in the history panel"}
 knitr::include_graphics("images/sourcetree/sourcetree_fetched.png")
 ```
 
@@ -338,7 +351,7 @@ knitr::include_graphics("images/sourcetree/sourcetree_uncommitted_conflict.png")
 
 ### Committed Conflicting Changes
 
-The local changes can either be committed or reverted. In this example, the changes will be committed similarly to \@ref(commit).
+The local changes can either be committed or reverted. For this example, commit the changes as shown in section \@ref(commit).
 
 ## Merge Changes
 
@@ -352,9 +365,9 @@ knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict.png")
 
 ### Resolve Conflicts
 
-If the changes are to be fully overwritten by either the remote or the local file, then the right-click menu, shown in \@ref(fig:resolve-conflicts-menu), can be used to *Resolve Using 'Mine'* to overwrite with local changes, or *Resolve Using 'Theirs' to overwrite with remote changes.
+If the changes are to be fully overwritten by either the remote or the local file, then the right-click menu, shown in \@ref(fig:resolve-conflicts-menu), can be used to *Resolve Using 'Mine'* to overwrite with local changes, or *Resolve Using 'Theirs'* to overwrite with remote changes.
 
-If the conflicts are more complex, then the conflicting file can be manually merged, then the right-click menu can be used to *Mark Resolved*, which will automatically stage the changes.
+If the conflicts are more complex, then the conflicting file will need to be edited and merged manually. Make the necessary changes to the file, making sure to remove the characters that were added to indicate merge conflicts (i.e. '====' and '<<< HEAD'). Once complete, use the right-click menu and select *Mark Resolved*, which will automatically stage the changes.
 
 ```{r, label = "resolve-conflicts-menu", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to manually resolve conflicts in Sourcetree"}
 knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict_menu.png")
@@ -364,13 +377,13 @@ knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict_menu.png"
 
 Once the conflicts have been resolved, then they can be committed and pushed as normal. A commit comment will be automatically generated for this merge commit, as shown in \@ref(fig:resolved-conflict-commit).
 
-```{r, label = "resolved-conflict-commit", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the history tab after pushing"}
+```{r, label = "resolved-conflict-commit", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree with automatically generated commit message for merge"}
 knitr::include_graphics("images/sourcetree/sourcetree_resolved_conflict_commit.png")
 ```
 
 The *History* page will be shown again with the changes merged in, as if \@ref(fig:resolved-conflict-pushed).
 
-```{r, label = "resolved-conflict-pushed", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree with automatically generated commit message for merge"}
+```{r, label = "resolved-conflict-pushed", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the history tab after pushing"}
 knitr::include_graphics("images/sourcetree/sourcetree_resolved_conflict_pushed.png")
 ```
 
@@ -426,7 +439,7 @@ knitr::include_graphics("images/sourcetree/sourcetree_checkout_new_branch.png")
 
 ### Using *Sourcetree*
 
-Before a branch is to be created, the base for the new branch must be checked out. This is described in \@ref(checkout). A branch on the local repository can also be used as a base, by checking out the local branch within the "Branches" section in the left-hand panel.
+Before a branch is to be created, the base for the new branch must be checked out. This is described in \@ref(checkout). A branch on the local repository can also be used as a base, by checking out the local branch within the "Branches" section in the left-hand panel. You can see which branch has been checked out by seeing it emboldened.
 
 In *Sourcetree*, click the "Branch" button in the top bar, and enter the name of the new branch. Click "Create Branch", and it will be created and checked out.
 
@@ -434,7 +447,7 @@ In *Sourcetree*, click the "Branch" button in the top bar, and enter the name of
 knitr::include_graphics("images/sourcetree/sourcetree_create_branch.png")
 ```
 
-To add the new branch to the remote repository on *GitHub*, changes must be pushed. Click the "Push" button in the top bar, then select only the new branch to be pushed. Click "Push" to add the new branch to the remote repository.
+To add the new branch to the remote repository on *GitHub*, changes must be pushed. Click the "Push" button in the top bar, then select only the new branch to be pushed (note that for any future commits on a branch, make sure to only push the respective branch). Click "Push" to add the new branch to the remote repository.
 
 ```{r, label = "push-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Push popup in Sourcetree"}
 knitr::include_graphics("images/sourcetree/sourcetree_push_new_branch.png")
@@ -512,7 +525,7 @@ Back in *Sourcetree*, the main branch needs to be checked out, as the local bran
 knitr::include_graphics("images/sourcetree/sourcetree_checkout_main.png")
 ```
 
-Once the checkout has completed, pull from the remote repository to get the merged changes.
+Once the checkout has completed, pull from the remote repository to get the merged changes. You can also delete the removed branches from *SourceTree* as in section \@ref(delete-sourcetree-branches).
 
 ### Merging in *Sourcetree*
 
@@ -526,7 +539,7 @@ knitr::include_graphics("images/sourcetree/sourcetree_select_merge_commit.png")
 
 The main branch should then be pushed to the remote repository.
 
-#### Delete Branches
+#### Delete Branches {#delete-sourcetree-branches}
 
 The branch can now be deleted both locally and remotely. The local repository can be deleted in the same right-click menu used to checkout a local branch.
 
