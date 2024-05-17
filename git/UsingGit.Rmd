@@ -438,7 +438,7 @@ knitr::include_graphics("images/github/github_new_branches.png")
 
 #### Checkout branch {#checkout}
 
-To access this `r glossary("branch")` in *`r glossary("Sourcetree")`*, it must be `r glossary("checkout", display = "checked out")`. In order for *`r glossary("Sourcetree")`* to detect the newly created `r glossary("remote")` `r glossary("branch")`, changes must first be `r glossary("pull", display = "pulled")`. Once that has completed, find the `r glossary("branch")` by expanding the "*Remotes*" section in the left-hand panel, and select it. Right click on the selected `r glossary("branch")` and click "Checkout origin/<BRANCH NAME>".
+To access this `r glossary("branch")` in *`r glossary("Sourcetree")`*, it must be `r glossary("checkout", display = "checked out")`. In order for *`r glossary("Sourcetree")`* to detect the newly created `r glossary("remote")` `r glossary("branch")`, changes must first be `r glossary("pull", display = "pulled")`. Once that has completed, find the `r glossary("branch")` by expanding the "*Remotes*" section in the left-hand panel, and select it. Right click on the selected `r glossary("branch")` and click "Checkout origin/...".
 
 ```{r, label = "checkout-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to checkout a remote branch within Sourcetree"}
 knitr::include_graphics("images/sourcetree/sourcetree_checkout_branch.png")
@@ -452,7 +452,13 @@ knitr::include_graphics("images/sourcetree/sourcetree_checkout_new_branch.png")
 
 ### Using *Sourcetree*
 
-Before a `r glossary("branch")` is to be created, the base for the new `r glossary("branch")` must be `r glossary("checkout", display = "checked out")`. This is described in \@ref(checkout). A `r glossary("branch")` on the `r glossary("local")` `r glossary("repository")` can also be used as a base, by checking out the `r glossary("local")` `r glossary("branch")` within the "*Branches*" section in the left-hand panel. You can see which `r glossary("branch")` has been `r glossary("checkout", display = "checked out")` by seeing it emboldened.
+#### Checkout the Base Branch
+
+Before a `r glossary("branch")` is to be created, the base for the new `r glossary("branch")` must be `r glossary("checkout", display = "checked out")`. For a branch on the `r glossary("remote")` `r glossary("repository")`, this is described in \@ref(checkout). If the base branch is already `r glossary("checkout", display = "checked out")`, for instance "main" in this case, then skip to \@ref(sourcetree-create-branch).
+
+A `r glossary("branch")` on the `r glossary("local")` `r glossary("repository")` can also be used as a base. It can be `r glossary("checkout", display = "checked out")` by right-clicking on the `r glossary("branch")` within the "*Branches*" section in the left-hand panel, and clicking "*Checkout...*". The `r glossary("branch")` which is currently `r glossary("checkout", display = "checked out")` is shown in bold.
+
+#### Create the Branch {#sourcetree-create-branch}
 
 In *`r glossary("Sourcetree")`*, click the "*Branch*" button in the top bar, and enter the name of the new `r glossary("branch")`. Click "*Create Branch*", and it will be created and `r glossary("checkout", display = "checked out")`.
 
