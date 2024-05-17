@@ -1,3 +1,9 @@
+API: |
+  API stands for "Application Programming Interface". It is a system which is provided by an application to allow for external programs to access it.
+  
+BitBucket: |
+  BitBucket is a remote repository hosting service, much like GitHub.
+  
 Branch: |
   Branches are copies of the entire codebase which exist in parallel in a respository.
   
@@ -16,6 +22,9 @@ Commit: |
 Conflict: |
   When changes are made to the same lines in a version-controlled file from multiple sources. Changes must be manually merged to reolve the conflicts.
   
+Command Line: |
+  The text-based interface for interacting with computer systems. Sometimes refered to as "cmd", "the shell", "command prompt".
+  
 Diff: |
   Short for 'difference'. A record of the changes made to a file between commits.
   
@@ -25,20 +34,32 @@ Fetch: |
 Git: |
   Git is an application which manages files in version control, keeping track of all changes made to them.
   
+Git Bash: |
+  Git Bash is an application to allow users to use text-based commands to interact with Git directly.
+  
 GitHub: |
   Github.com is a file hosting service which uses Git to manage version control.
   
 History: |
   A record of all versions of the files, and the changes made between them.
   
+Key: |
+  A key is an alternative to a password, but it does not contain the password itself. They are often used to access APIs.
+  
 Local: |
-  The changes made and committed on a computer are only found on that 'local' computer, until they are pushed to the 'remote' repository
+  Anything which is found only on the computer being used at the time is considered "local". This can be applied to: files, changes, repositories, branches, etc.
+  
+Markdown: |
+  A file format used to create simple formatted documents, using simple text-markers.
+  
+Mercurial: |
+  Mercurial is another version control application similar to Git.
   
 Merge: |
   When changes from one source (repo or branch) are integrated into another.
   
 Remote: |
-  A 'remote' repository is one which is not found on the local computer, but is stored elsewhere. A common example is a repository hosted on GitHub.com.
+  Anything which is not found on the computer being used at the time, but it stored elsewhere, is considered "remote". This can be applied to: files, changes, repositories, branches, etc. A common example is a repository hosted on GitHub.com.
   
 Repository: |
   A folder on your own computer, or in the cloud, which contains the files and tracks the changes. Sometimes refered to as a 'repo' (REE-po).
@@ -58,5 +79,11 @@ Push: |
 Source code: |
   The code from which an application or website is built.
   
+Sourcetree: |
+  Sourcetree is an application which allows users to interact with Git via a graphical interface, rather than via the command line.
+  
 Stage: |
   'Staging' local changes marks them as ready for committing. Whole files, or individual changes within a file can be staged.
+  
+URL: |
+  URL stands for "Universal Resource Locator". It is the address of any item available via the internet. An example would be the web address of Google: https://google.com.
