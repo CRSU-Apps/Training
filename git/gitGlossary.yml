@@ -59,7 +59,7 @@ Merge: |
   When changes from one source (repo or branch) are integrated into another.
   
 Remote: |
-  Anything which is not found on the computer being used at the time, but it stored elsewhere, is considered "remote". This can be applied to: files, changes, repositories, branches, etc. A common example is a repository hosted on GitHub.com.
+  Anything which is not found on the computer being used at the time, but is stored elsewhere, is considered "remote". This can be applied to: files, changes, repositories, branches, etc. A common example is a repository hosted on GitHub.com.
   
 Repository: |
   A folder on your own computer, or in the cloud, which contains the files and tracks the changes. Sometimes refered to as a 'repo' (REE-po).
