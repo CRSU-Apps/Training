@@ -174,9 +174,9 @@ knitr::include_graphics("images/sourcetree/sourcetree_source_error.png")
 
 # Preventing File Being Committed {#git-ignore}
 
-When the `r glossary("remote")` `r glossary("repository")` was created, a file titled *.gitignore* was created. This file is what *`r glossary("Git")`* uses to know which files do not need version control. It is not necessary, but will mean that the *`r glossary("Sourcetree")`* won't get clogged up with files that don't need version control. This file can be edited in a text editor, like any other file. This may include files that are automatically generated or managed by other software. A good example of this is the editor configuration within the application used to write code; that is data related only to the `r glossary("local")` setup of the project, and is not needed for someone else to run the code on their own computer. You should also add files that contain sensitive information, such as datasets, passwords or `r glossary("API")` `r glossary("key", display = "keys")`.
+When the `r glossary("remote")` `r glossary("repository")` was created, a file titled *.gitignore* was created. This file is what *`r glossary("Git")`* uses to know which files and directory do not need version control. It is not necessary, but will mean that *`r glossary("Sourcetree")`* won't get clogged up with files that don't need version control. This file can be edited in a text editor, like any other file. This may include files that are automatically generated or managed by other software. A good example of this is the editor configuration within the application used to write code; that is data related only to the `r glossary("local")` setup of the project, and is not needed for someone else to run the code on their own computer. You should also add files that contain sensitive information, such as datasets, passwords or `r glossary("API")` `r glossary("key", display = "keys")`.
 
-Each line in this file names a file, folder or file type to be ignored when `r glossary("commit", display = "committing")`. All files of a given type can be excluded by using a `*` as a wildcard, eg. `*.xlsx` will ignore all excel spreadsheets.
+Each line in this file names a file, directory or file type to be ignored when `r glossary("commit", display = "committing")`. All files of a given type can be excluded by using a `*` as a wildcard, eg. `*.xlsx` will ignore all excel spreadsheets. A directory can be excluded by adding a line with the directory name, followed by a `/`, eg. `output/` will ignore the contents of the "*output*" directory, but not a file named "*output*".
 
 # Committing and Pushing
 
@@ -288,9 +288,11 @@ On the "*Commit*" page in *`r glossary("Sourcetree")`*, right-click on the file 
 knitr::include_graphics("images/sourcetree/sourcetree_revert.png")
 ```
 
-# Fetching and Pulling: Collaborating with Others
+# Fetching and Pulling: Collaborating with Others (or Yourself)
 
-If all the changes come from a single computer, then `r glossary("commit", display = "committing")` and `r glossary("push", display = "pushing")` are the only operations that are needed. However, more often than not, changes will be `r glossary("commit", display = "committed")` from multiple users on computers. In these cases, the `r glossary("local")` `r glossary("repository")` on each computer needs to be synchronised with the `r glossary("remote")` `r glossary("repository")`, downloading changes made by others, and `r glossary("merge", display = "merging")` them into the `r glossary("local", display = "local changes")`.
+If all the changes come from a single computer, then `r glossary("commit", display = "committing")` and `r glossary("push", display = "pushing")` are the only operations that are needed. However, more often than not, changes will be `r glossary("commit", display = "committed")` from multiple computers, either from the same user or multiple users. In these cases, the `r glossary("local")` `r glossary("repository")` on each computer needs to be synchronised with the `r glossary("remote")` `r glossary("repository")`, downloading changes made on other computers, and `r glossary("merge", display = "merging")` them into the `r glossary("local", display = "local changes")`.
+
+It is worth noting that changes made on one computer will only be available on other computers if the changes have been committed and pushed, even if the changes on the first computer were made by the same user.
 
 This section will demonstrate how to keep a `r glossary("local")` `r glossary("repository")` in synch with the `r glossary("remote")` `r glossary("repository")` on *`r glossary("GitHub")`*.
 
@@ -380,10 +382,24 @@ knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict.png")
 
 If the changes are to be fully overwritten by either the `r glossary("remote")` or the `r glossary("local", display = "local file")`, then the right-click menu, shown in \@ref(fig:resolve-conflicts-menu), can be used to "*Resolve Using 'Mine'*" to overwrite with `r glossary("local", display = "local changes")`, or "*Resolve Using 'Theirs'*" to overwrite with `r glossary("remote")` changes.
 
-If the `r glossary("conflict", display = "conflicts")` are more complex, then the `r glossary("conflict", display = "conflicting")` file will need to be edited and `r glossary("merge", display = "merged")` manually. Make the necessary changes to the file, making sure to remove the characters that were added to indicate `r glossary("merge")` `r glossary("conflict", display = "conflicts")` (i.e. '====' and '<<< HEAD'). Once complete, use the right-click menu and select "*Mark Resolved*", which will automatically `r glossary("stage")` the changes.
-
 ```{r, label = "resolve-conflicts-menu", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to manually resolve conflicts in Sourcetree"}
 knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict_menu.png")
+```
+
+If the `r glossary("conflict", display = "conflicts")` are more complex, then the `r glossary("conflict", display = "conflicting")` file will need to be edited and `r glossary("merge", display = "merged")` manually. Make the necessary changes to the file, making sure to remove the characters that were added to indicate `r glossary("merge")` `r glossary("conflict", display = "conflicts")` (i.e. '====' and '<<< HEAD'). Once complete, use the right-click menu and select "*Mark Resolved*", which will automatically `r glossary("stage")` the changes.
+
+#### Example
+
+Consider a to-do list which contains an item "Email Frank". One user had added some context to the item to record what they are emailing about. A second users has changed the item to "Email Helen" because Frank has moved onto another project. Both users have also added an extra item to the list. When the first user comes to `r glossary("pull")` changes, they find that their changes conflict, as in \@ref(fig:complex-conflict). Both sets of changes are valid, so they must be manually combined in order to keep all of the information. This is not something which can be done automatically. The manual changes must be done in an external editor, such as *Notepad++*.
+
+```{r, label = "complex-conflict", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Example of a complex merge conflict"}
+knitr::include_graphics("images/complex_merge_conflict.png")
+```
+
+In this case the "email" line can be combined to include both the new name, *and* the additional information. Both new items are also included in the final resolved file. Note that the '<<< HEAD', '====' and '>>>> ...' lines must be manually removed. See the resolved conflict in \@ref(fig:complex-conflict-resolution).
+
+```{r, label = "complex-conflict-resolution", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Example of the resolved conflict"}
+knitr::include_graphics("images/complex_merge_resolution.png")
 ```
 
 ### Stage, Commit and Push
@@ -582,6 +598,6 @@ If you find yourself stuck with any of the topics covered in this document, plea
 
 # Glossary
 ```{r, echo = FALSE, message = FALSE}
-glossary::glossary_load_all("gitGlossary.yml")
+glossary::glossary_path("gitGlossary.yml")
 glossary::glossary_table()
 ```
