@@ -9,12 +9,13 @@ output:
     toc_float: true
 ---
 
+```
 <!---
 # Style Notes:
 - Buttons, pages, menu items, etc. are referred to as "*<NAME>*".
 - All items found in the glossary are linked, every time they are used.
 --->
-
+```
 ```{r, echo = FALSE, message = FALSE, include = FALSE}
 # To get the glossary working correctly, the {glossary} package must be installed from GitHub
 # remotes::install_github("https://github.com/debruine/glossary")
@@ -25,6 +26,7 @@ glossary::glossary_path("gitGlossary.yml")
 glossary::glossary_popup("hover")
 ```
 
+```
 <!---
 # TODO:
 - [X] Update alt-text for images
@@ -39,7 +41,7 @@ glossary::glossary_popup("hover")
 - [X] Make references to buttons consistent
 - [ ] Make references to sections consistent
 --->
-
+```
 # Introduction
 
 ## What is 'Version Control'?
@@ -47,7 +49,7 @@ glossary::glossary_popup("hover")
 Have you ever found yourself naming files like the image below? If so, version control can help you.
 
 ```{r, label = "bad-vc", dpi=45, fig.align = "center", echo = FALSE, fig.cap ="How people commonly name their files..."}
-knitr::include_graphics("images/BadVersionControl.png")
+knitr::include_graphics("images/bad_version_control.png")
 ```
 
 Version control is a system which records all changes made to documents stored in a `r glossary("repository")`. These documents are usually `r glossary("source code")` files but can be any format (e.g. word documents). This system makes a new entry in the `r glossary("history", display = "version history")` every time changes are `r glossary("commit", display = "committed")`; each record contains the list of changes made, a timestamp of when they were made and the name of the person who made them.
@@ -81,7 +83,7 @@ This section demonstrates how to set up *`r glossary("Git")`* and *`r glossary("
 On university computers, *`r glossary("Git")`* must be installed via the software centre.
 
 ```{r, label = "software-git", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Installing Git using Software Centre"}
-knitr::include_graphics("images/Software_Git.png")
+knitr::include_graphics("images/software_git.png")
 ```
 
 ## Download and Install *Sourcetree*
@@ -166,7 +168,7 @@ knitr::include_graphics("images/sourcetree/sourcetree_cloned.png")
 
 ### Possible Directory Error
 
-If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure \@ref(fig:directory-error)). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard. 
+If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure \@ref(fig:directory-error)). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard.
 
 ```{r, label = "directory-error", dpi=110, fig.align = "center", echo = FALSE, fig.cap = "Error pop-up regarding permissions with the chosen directory"}
 knitr::include_graphics("images/sourcetree/sourcetree_source_error.png")
@@ -386,17 +388,29 @@ If the changes are to be fully overwritten by either the `r glossary("remote")` 
 knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict_menu.png")
 ```
 
-If the `r glossary("conflict", display = "conflicts")` are more complex, then the `r glossary("conflict", display = "conflicting")` file will need to be edited and `r glossary("merge", display = "merged")` manually. Make the necessary changes to the file, making sure to remove the characters that were added to indicate `r glossary("merge")` `r glossary("conflict", display = "conflicts")` (i.e. '====' and '<<< HEAD'). Once complete, use the right-click menu and select "*Mark Resolved*", which will automatically `r glossary("stage")` the changes.
+If the `r glossary("conflict", display = "conflicts")` are more complex, then the `r glossary("conflict", display = "conflicting")` file will need to be edited and `r glossary("merge", display = "merged")` manually. Make the necessary changes to the file, making sure to remove the characters that were added to indicate `r glossary("merge")` `r glossary("conflict", display = "conflicts")` (i.e. '====' and '\<\<\< HEAD'). Once complete, use the right-click menu and select "*Mark Resolved*", which will automatically `r glossary("stage")` the changes.
 
 #### Example
 
-Consider a to-do list which contains an item "Email Frank". One user had added some context to the item to record what they are emailing about. A second users has changed the item to "Email Helen" because Frank has moved onto another project. Both users have also added an extra item to the list. When the first user comes to `r glossary("pull")` changes, they find that their changes conflict, as in \@ref(fig:complex-conflict). Both sets of changes are valid, so they must be manually combined in order to keep all of the information. This is not something which can be done automatically. The manual changes must be done in an external editor, such as *Notepad++*.
+Consider a to-do list which contains an item "Email Frank". One user has changed the item to "Email Helen" because Frank has moved onto another project, and added an extra item "Book bouncy castle", as in \@ref(fig:merge-conflict-first-user).
+
+```{r, label = "merge-conflict-first-user", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes made by the first user"}
+knitr::include_graphics("images/complex_merge_first_user_changes.png")
+```
+
+After the first user's `r glossary("commit")` and `r glossary("push")` a second user had made changes without first `r glossary("pull", display = "pulling")` the first user's changes. They added 'about "Operation Falafel"' to the "Email Frank" item, to record what they are emailing about, and added an extra item "Submit paper abstract", as in \@ref(fig:merge-conflict-second-user).
+
+```{r, label = "merge-conflict-second-user", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes made by the second user"}
+knitr::include_graphics("images/complex_merge_second_user_changes.png")
+```
+
+If the second user tries to `r glossary("commit")` and `r glossary("push")` their changes, they will be warned that their changes are out-of-date with respect to the `r glossary("remote")` `r glossary("repository", display = "repo")`. When they `r glossary("pull")` changes, they find that their `r glossary("local")` changes `r glossary("conflict")` with the `r glossary("remote")` changes, as in \@ref(fig:complex-conflict). Both sets of changes are valid, so they must be manually combined in order to keep all of the information. This is not something which can be done automatically; the manual changes must be done in an external editor, such as *Notepad++*. *`r glossary("Git")`* will mark the `r glossary("conflict", display = "conflicting")` changes with marker lines ('\<\<\< HEAD', '====' and '\>\>\>\> ...'), as in \@ref(fig:complex-conflict).
 
 ```{r, label = "complex-conflict", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Example of a complex merge conflict"}
 knitr::include_graphics("images/complex_merge_conflict.png")
 ```
 
-In this case the "email" line can be combined to include both the new name, *and* the additional information. Both new items are also included in the final resolved file. Note that the '<<< HEAD', '====' and '>>>> ...' lines must be manually removed. See the resolved conflict in \@ref(fig:complex-conflict-resolution).
+In this case the "Email Frank" item can be combined to include both the new name, *and* the additional information. Both new items are also included in the final resolved file. Note that the marker lines must be manually removed. See the resolved `r glossary("conflict")` in \@ref(fig:complex-conflict-resolution).
 
 ```{r, label = "complex-conflict-resolution", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Example of the resolved conflict"}
 knitr::include_graphics("images/complex_merge_resolution.png")
@@ -591,12 +605,14 @@ knitr::include_graphics("images/sourcetree/sourcetree_delete_remote_branch.png")
 ```
 
 # Other Resources
+
 - [Happy Git and GitHub for the useR](https://happygitwithr.com/)
   - Getting started with Git and GitHub specifically for *R* users.
 
-If you find yourself stuck with any of the topics covered in this document, please feel free to contact us at clareece.nevill@leicester.ac.uk or janion.nevill@leicester.ac.uk.
+If you find yourself stuck with any of the topics covered in this document, please feel free to contact us at [clareece.nevill\@leicester.ac.uk](mailto:clareece.nevill@leicester.ac.uk){.email} or [janion.nevill\@leicester.ac.uk](mailto:janion.nevill@leicester.ac.uk){.email}.
 
 # Glossary
+
 ```{r, echo = FALSE, message = FALSE}
 glossary::glossary_path("gitGlossary.yml")
 glossary::glossary_table()
