@@ -1,15 +1,15 @@
 ---
 title: "Introduction to version control with Git for researchers"
 author: "Janion Nevill & Clareece Nevill"
-date: "10th April 2024"
-output: 
-  bookdown::html_document2:
-    number_sections: true
+date: "2025/07/10"
+format:
+  html:
+    number-sections: true
     toc: true
     toc_float: true
 ---
 
-```
+```{=html}
 <!---
 # Style Notes:
 - Buttons, pages, menu items, etc. are referred to as "*<NAME>*".
@@ -26,7 +26,7 @@ glossary::glossary_path("gitGlossary.yml")
 glossary::glossary_popup("hover")
 ```
 
-```
+```{=html}
 <!---
 # TODO:
 - [X] Update alt-text for images
@@ -46,11 +46,9 @@ glossary::glossary_popup("hover")
 
 ## What is 'Version Control'?
 
-Have you ever found yourself naming files like the image below? If so, version control can help you.
+Have you ever found yourself naming files like the image below? If so, version control can help you. @fig-bad-vc
 
-```{r, label = "bad-vc", dpi=45, fig.align = "center", echo = FALSE, fig.cap ="How people commonly name their files..."}
-knitr::include_graphics("images/bad_version_control.png")
-```
+![How people commonly name their files...](images/bad_version_control.png){#fig-bad-vc}
 
 Version control is a system which records all changes made to documents stored in a `r glossary("repository")`. These documents are usually `r glossary("source code")` files but can be any format (e.g. word documents). This system makes a new entry in the `r glossary("history", display = "version history")` every time changes are `r glossary("commit", display = "committed")`; each record contains the list of changes made, a timestamp of when they were made and the name of the person who made them.
 
@@ -82,9 +80,7 @@ This section demonstrates how to set up *`r glossary("Git")`* and *`r glossary("
 
 On university computers, *`r glossary("Git")`* must be installed via the software centre.
 
-```{r, label = "software-git", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Installing Git using Software Centre"}
-knitr::include_graphics("images/software_git.png")
-```
+![Installing Git using Software Centre](images/software_git.png){#fig-software-git}
 
 ## Download and Install *Sourcetree*
 
@@ -94,17 +90,13 @@ knitr::include_graphics("images/software_git.png")
 
 If you have an existing *`r glossary("BitBucket")`* account, then this can be used to register the software, otherwise registration can be skipped.
 
-```{r, label = "resgistration", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Registration step when installing Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_registration.png")
-```
+![Registration step when installing Sourcetree](images/sourcetree/sourcetree_registration.png){#fig-resgistration}
 
 ### Install Tools
 
 For this tutorial, we are using *`r glossary("Git")`*, so *`r glossary("Mercurial")`* can be unchecked.
 
-```{r, label = "install-tools", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Tool installation step when installing Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_install_tools.png")
-```
+![Tool installation step when installing Sourcetree](images/sourcetree/sourcetree_install_tools.png){#fig-install-tools}
 
 ### Preferences
 
@@ -112,69 +104,53 @@ Finally, *`r glossary("Sourcetree")`* requires a user name and email address. th
 
 You may also be asked about setting up *SSH keys*, simple select the "No" button and move on.
 
-```{r, label = "preferences", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Preferences step when installing Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_preferences.png")
-```
+![Preferences step when installing Sourcetree](images/sourcetree/sourcetree_preferences.png){#fig-preferences}
 
 ### Home Page
 
 *`r glossary("Sourcetree")`* will open the home page with no repositories currently listed.
 
-```{r, label = "home", dpi=96, fig.align = "center", echo = FALSE, fig.cap ="Sourcetree home page"}
-knitr::include_graphics("images/sourcetree/sourcetree_fresh.png")
-```
+![Sourcetree home page](images/sourcetree/sourcetree_fresh.png){#fig-home}
 
 # Creating and Cloning a *GitHub* Repository
 
-This section will focus on starting a new project. If you have an existing `r glossary("repository")` that you would like to work on, then skip to \@ref(clone).
+This section will focus on starting a new project. If you have an existing `r glossary("repository")` that you would like to work on, then skip to @sec-clone.
 
-## Create a repository {#new-repo}
+## Create a repository {#sec-new-repo}
 
-First, you need to create a new `r glossary("repository")` within your *`r glossary("GitHub")`* account. Go to <http://github.com> and create a new `r glossary("repository")` using the green "*New*" button in the top-left corner of the home page (figure \@ref(fig:new-repo-button)).
+First, you need to create a new `r glossary("repository")` within your *`r glossary("GitHub")`* account. Go to <http://github.com> and create a new `r glossary("repository")` using the green "*New*" button in the top-left corner of the home page (figure @fig-new-repo-button).
 
-```{r, label = "new-repo-button", dpi=75, fig.align = "center", echo = FALSE, fig.cap ="Green new repository button on GitHub"}
-knitr::include_graphics("images/github/github_home.png")
-```
+![Green new repository button on GitHub](images/github/github_home.png){#fig-new-repo-button}
 
-Next, fill in the necessary details as in figure \@ref(fig:create-new-repo). You can choose whether to have your `r glossary("repository")` as *public* or *private* depending on your needs; generally a public `r glossary("repository")` is preferable unless your code contains sensitive information or intellectual property which is to be protected.
+Next, fill in the necessary details as in figure @fig-create-new-repo. You can choose whether to have your `r glossary("repository")` as *public* or *private* depending on your needs; generally a public `r glossary("repository")` is preferable unless your code contains sensitive information or intellectual property which is to be protected.
 
-Helpfully, *`r glossary("GitHub")`* provides templates for a `.gitignore` file, which will prevent you from `r glossary("commit", display = "committing")` files which are not required to share the project. Select the default for your project's language from the dropdown menu. This will be covered in more detail in \@ref(git-ignore)
+Helpfully, *`r glossary("GitHub")`* provides templates for a `.gitignore` file, which will prevent you from `r glossary("commit", display = "committing")` files which are not required to share the project. Select the default for your project's language from the dropdown menu. This will be covered in more detail in @sec-git-ignore
 
-```{r, label = "create-new-repo", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "New repository form on GitHub"}
-knitr::include_graphics("images/github/github_new.png")
-```
+![New repository form on GitHub](images/github/github_new.png){#fig-create-new-repo}
 
 Once you have completed the configuration, click "*Create repository*". You will be taken to the home of the project which will contain 2 files: `.gitignore` and `README.md`. This "*README*" file is a `r glossary("markdown")` file which is used to describe the project. By default, it will contain the name and description entered on the previous page.
 
-```{r, label = "new-repo", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Newly created repository on GitHub"}
-knitr::include_graphics("images/github/github_project.png")
-```
+![Newly created repository on GitHub](images/github/github_project.png){#fig-new-repo}
 
-## Clone the Repository {#clone}
+## Clone the Repository {#sec-clone}
 
 To make changes to the `r glossary("repository")`, it must first be `r glossary("clone", display = "cloned")` to the `r glossary("local", display = "local computer")`. Copy the `r glossary("URL")` of the `r glossary("repository")` from your web browser, then click "*Clone*" in *`r glossary("Sourcetree")`*. On this page, you can paste in the `r glossary("repository")` `r glossary("URL")`, set a working directory to which to download the files, and enter a name for the project within *`r glossary("Sourcetree")`*.
 
 Further repositories can be cloned by clicking the "*+*" button on the right-hand side of the tab header.
 
-```{r, label = "clone", dpi=110, fig.align = "center", echo = FALSE, fig.cap = "Clone options in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_clone.png")
-```
+![Clone options in Sourcetree](images/sourcetree/sourcetree_clone.png){#fig-clone}
 
 After clicking the "*Clone*" button, *`r glossary("Sourcetree")`* will open the project in the current tab.
 
-```{r, label = "cloned", dpi=110, fig.align = "center", echo = FALSE, fig.cap = "Cloned repository in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_cloned.png")
-```
+![Cloned repository in Sourcetree](images/sourcetree/sourcetree_cloned.png){#fig-cloned}
 
 ### Possible Directory Error
 
-If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure \@ref(fig:directory-error)). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard.
+If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure @fig-directory-error). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard.
 
-```{r, label = "directory-error", dpi=110, fig.align = "center", echo = FALSE, fig.cap = "Error pop-up regarding permissions with the chosen directory"}
-knitr::include_graphics("images/sourcetree/sourcetree_source_error.png")
-```
+![Error pop-up regarding permissions with the chosen directory](images/sourcetree/sourcetree_source_error.png){#fig-directory-error}
 
-# Preventing File Being Committed {#git-ignore}
+# Preventing File Being Committed {#sec-git-ignore}
 
 When the `r glossary("remote")` `r glossary("repository")` was created, a file titled *.gitignore* was created. This file is what *`r glossary("Git")`* uses to know which files and directory do not need version control. It is not necessary, but will mean that *`r glossary("Sourcetree")`* won't get clogged up with files that don't need version control. This file can be edited in a text editor, like any other file. This may include files that are automatically generated or managed by other software. A good example of this is the editor configuration within the application used to write code; that is data related only to the `r glossary("local")` setup of the project, and is not needed for someone else to run the code on their own computer. You should also add files that contain sensitive information, such as datasets, passwords or `r glossary("API")` `r glossary("key", display = "keys")`.
 
@@ -184,23 +160,19 @@ Each line in this file names a file, directory or file type to be ignored when `
 
 In *`r glossary("Git")`* terminology, changes are "`r glossary("commit", display = "committed")`" to the `r glossary("local")` `r glossary("repository")`, then "`r glossary("push", display = "pushed")`" to the `r glossary("remote")` `r glossary("repository")` (in this case on *`r glossary("GitHub")`*). By `r glossary("commit", display = "committing")`, the changes are saved into the `r glossary("history", display = "version history")`, but remain only on the computer on which they were made. By `r glossary("push", display = "pushing")`, the changes are uploaded to the *`r glossary("GitHub")`*.
 
-## Commit Changes {#commit}
+## Commit Changes {#sec-commit}
 
 To test that the project has been successfully set up and linked with the *`r glossary("GitHub")`* `r glossary("repository")`, we are now going to `r glossary("commit")` changes and check that *`r glossary("GitHub")`* also receives it.
 
-Open the `README.md` file in any text editor, and add some new text. Next, create a new file in the project directory. In this example a file named `ImportantScript.py` was created. These changes will be automatically detected by *`r glossary("Sourcetree")`* as shown in \@ref(fig:diff-files).
+Open the `README.md` file in any text editor, and add some new text. Next, create a new file in the project directory. In this example a file named `ImportantScript.py` was created. These changes will be automatically detected by *`r glossary("Sourcetree")`* as shown in @fig-diff-files.
 
-```{r, label = "diff-files", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree having detected changes"}
-knitr::include_graphics("images/sourcetree/sourcetree_files.png")
-```
+![Sourcetree having detected changes](images/sourcetree/sourcetree_files.png){#fig-diff-files}
 
 Note that you may see different coloured symbols next to each file. An orange square with a pencil indicates that this is an existing file that has been edited. A purple square with a question mark indicates that this file is new since the `r glossary("commit")`.
 
-Clicking on a changed file will show a `r glossary("diff")` (Short for "difference") in the right-hand panel, as in \@ref(fig:diff-change).
+Clicking on a changed file will show a `r glossary("diff")` (Short for "difference") in the right-hand panel, as in @fig-diff-change.
 
-```{r, label = "diff-change", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the 'diff' for an updated file"}
-knitr::include_graphics("images/sourcetree/sourcetree_diff_change.png")
-```
+![Sourcetree showing the 'diff' for an updated file](images/sourcetree/sourcetree_diff_change.png){#fig-diff-change}
 
 Before `r glossary("commit", display = "committing")` these changes, they must first be "`r glossary("stage", display = "staged")`". This means marking the files as ready to be `r glossary("commit", display = "committed")`. Files can be `r glossary("stage")` individually by selected the grey plus button to the right of each file, or all at once, using the "*Stage All*" button.
 
@@ -208,27 +180,21 @@ Once all the files are `r glossary("stage", display = "staged")`, a `r glossary(
 
 Again, note the different symbols next to the files. The green square with a plus symbol indicates that the file is a new file, rather than an edit to an existing file in the `r glossary("repository")`..
 
-```{r, label = "staged", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the files staged"}
-knitr::include_graphics("images/sourcetree/sourcetree_staged.png")
-```
+![Sourcetree showing the files staged](images/sourcetree/sourcetree_staged.png){#fig-staged}
 
 Once the changes have been `r glossary("commit", display = "committed")`, *`r glossary("Sourcetree")`* will display the "*History*" page, showing all `r glossary("commit", display = "commits")` to the project.
 
-```{r, label = "committed", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the commit history"}
-knitr::include_graphics("images/sourcetree/sourcetree_committed.png")
-```
+![Sourcetree showing the commit history](images/sourcetree/sourcetree_committed.png){#fig-committed}
 
 Checking the project on *`r glossary("GitHub")`* will show that the changes have not yet been uploaded. This will be done in the next step, by "`r glossary("push", display = "pushing")`" to the `r glossary("remote")` `r glossary("repository")`.
 
-## Push Changes to *GitHub* {#push}
+## Push Changes to *GitHub* {#sec-push}
 
 ### Start Push
 
-Note that in the top-left of the *`r glossary("Sourcetree")`* window, the "*Push*" button has a `1` badge on it. This is showing that there is 1 `r glossary("local")` `r glossary("commit")` which has not yet been `r glossary("push", display = "pushed")` to the `r glossary("remote")` `r glossary("repository")`. Clicking that button will open a popup to configure that "`r glossary("push")`" \@ref(fig:push).
+Note that in the top-left of the *`r glossary("Sourcetree")`* window, the "*Push*" button has a `1` badge on it. This is showing that there is 1 `r glossary("local")` `r glossary("commit")` which has not yet been `r glossary("push", display = "pushed")` to the `r glossary("remote")` `r glossary("repository")`. Clicking that button will open a popup to configure that "`r glossary("push")`" @fig-push.
 
-```{r, label = "push", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "'push' popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_push.png")
-```
+!['push' popup in Sourcetree](images/sourcetree/sourcetree_push.png){#fig-push}
 
 Click the "*Push*" button, and the `r glossary("commit", display = "commits")` will be `r glossary("push", display = "pushed")` to *`r glossary("GitHub")`*.
 
@@ -238,47 +204,35 @@ When you `r glossary("push")` for the first time, you will need to provide *`r g
 
 #### Windows Credentials Issue
 
-On Windows computers, it is possible that the first `r glossary("push")` will fail due to the credentials being invalid, as in \@ref(fig:failed-push). This is due to Windows Credentials Manager using the wrong credentials to connect to *`r glossary("GitHub")`*.
+On Windows computers, it is possible that the first `r glossary("push")` will fail due to the credentials being invalid, as in @fig-failed-push. This is due to Windows Credentials Manager using the wrong credentials to connect to *`r glossary("GitHub")`*.
 
-```{r, label = "failed-push", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the GitHub sign in popup"}
-knitr::include_graphics("images/sourcetree/sourcetree_failed_push.png")
-```
+![Sourcetree showing the GitHub sign in popup](images/sourcetree/sourcetree_failed_push.png){#fig-failed-push}
 
 To fix this, the credentials should be cleared. Open the Windows Credentials Manager by searching for "credentials" in the task bar, then click "*Manage Windows Credentials*" to open the manager.
 
-```{r, label = "windows-credentials-search", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Search credentials manager in the windows task bar"}
-knitr::include_graphics("images/windows_credentials_search.png")
-```
+![Search credentials manager in the windows task bar](images/windows_credentials_search.png){#fig-windows-credentials-search}
 
-Then remove any credentials which mention "git", as shown in \@ref(fig:windows-credentials-remove).
+Then remove any credentials which mention "git", as shown in @fig-windows-credentials-remove.
 
-```{r, label = "windows-credentials-remove", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Remove credentials from Windows Credentials Manager"}
-knitr::include_graphics("images/windows_credentials_remove.png")
-```
+![Remove credentials from Windows Credentials Manager](images/windows_credentials_remove.png){#fig-windows-credentials-remove}
 
 Once this has been done, retry the `r glossary("push")`.
 
 ### Provide GitHub Credentials
 
-You will most likely be faced with a popup as seen in figure \@ref(fig:credentials) to link your *`r glossary("GitHub")`* account. Choose "*Sign in with your browser*" and then simply sign in (if you're already signed in on your web browser you may not need to do anything).
+You will most likely be faced with a popup as seen in figure @fig-credentials to link your *`r glossary("GitHub")`* account. Choose "*Sign in with your browser*" and then simply sign in (if you're already signed in on your web browser you may not need to do anything).
 
-```{r, label = "credentials", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the GitHub sign in popup"}
-knitr::include_graphics("images/sourcetree/sourcetree_github_signin.png")
-```
+![Sourcetree showing the GitHub sign in popup](images/sourcetree/sourcetree_github_signin.png){#fig-credentials}
 
 ### Completed Push
 
 After signing in, the `r glossary("push")` will complete and *`r glossary("Sourcetree")`* will return to the "*History*" tab.
 
-```{r, label = "pushed", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the history tab after pushing"}
-knitr::include_graphics("images/sourcetree/sourcetree_pushed.png")
-```
+![Sourcetree showing the history tab after pushing](images/sourcetree/sourcetree_pushed.png){#fig-pushed}
 
 Checking the `r glossary("repository")` on *`r glossary("GitHub")`* will now show that the changes have been received by *`r glossary("GitHub")`*. The page will need to be refreshed if it was left open from the original setup.
 
-```{r, label = "pushed-github", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "GitHub showing changes after pushing"}
-knitr::include_graphics("images/github/github_pushed.png")
-```
+![GitHub showing changes after pushing](images/github/github_pushed.png){#fig-pushed-github}
 
 ## Reverting Changes
 
@@ -286,9 +240,7 @@ If changes have been made `r glossary("local", display = "locally")` and are dee
 
 On the "*Commit*" page in *`r glossary("Sourcetree")`*, right-click on the file to be `r glossary("revert", display = "reverted")`, and click "*Revert*", or "*Discard File Changes*". This will discard all changes to that file since the most recent `r glossary("commit")`.
 
-```{r, label = "revert", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to revert changes in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_revert.png")
-```
+![Menu item to revert changes in Sourcetree](images/sourcetree/sourcetree_revert.png){#fig-revert}
 
 # Fetching and Pulling: Collaborating with Others (or Yourself)
 
@@ -298,25 +250,19 @@ It is worth noting that changes made on one computer will only be available on o
 
 This section will demonstrate how to keep a `r glossary("local")` `r glossary("repository")` in synch with the `r glossary("remote")` `r glossary("repository")` on *`r glossary("GitHub")`*.
 
-## Commit Change via *GitHub* Directly {#remote-commit}
+## Commit Change via *GitHub* Directly {#sec-remote-commit}
 
-Instead of `r glossary("commit", display = "committing")` changes from another computer, changes can be `r glossary("commit", display = "committed")` directly on *`r glossary("GitHub")`*. Go to the home page of the `r glossary("repository")` and click the pencil button in the top-right of the README panel, as shown in \@ref(fig:github-edit).
+Instead of `r glossary("commit", display = "committing")` changes from another computer, changes can be `r glossary("commit", display = "committed")` directly on *`r glossary("GitHub")`*. Go to the home page of the `r glossary("repository")` and click the pencil button in the top-right of the README panel, as shown in @fig-github-edit.
 
-```{r, label = "github-edit-button", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Edit button for README.md on GitHub"}
-knitr::include_graphics("images/github/github_edit_button.png")
-```
+![Edit button for README.md on GitHub](images/github/github_edit_button.png){#fig-github-edit-button}
 
 Make some changes, then click the "*Commit Changes*" button.
 
-```{r, label = "github-edit", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Edit page onGitHub"}
-knitr::include_graphics("images/github/github_edit.png")
-```
+![Edit page onGitHub](images/github/github_edit.png){#fig-github-edit}
 
-Then click the "*Commit Changes*" button on the popup shown in \@ref(fig:github-commit).
+Then click the "*Commit Changes*" button on the popup shown in @fig-github-commit.
 
-```{r, label = "github-commit", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Commit popup on GitHub"}
-knitr::include_graphics("images/github/github_commit.png")
-```
+![Commit popup on GitHub](images/github/github_commit.png){#fig-github-commit}
 
 ## Fetch Changes
 
@@ -324,29 +270,21 @@ When bringing in changes from the `r glossary("remote")` `r glossary("repository
 
 Back in *`r glossary("Sourcetree")`*, press the "*Fetch*" button to see the incoming changes from *`r glossary("GitHub")`*. Leave the default options on the popup, and click "*OK*".
 
-```{r, label = "fetch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Fetch popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_fetch.png")
-```
+![Fetch popup in Sourcetree](images/sourcetree/sourcetree_fetch.png){#fig-fetch}
 
-*`r glossary("Sourcetree")`* will show the "*History*" tab, selecting and emboldening the `r glossary("commit")` on which the `r glossary("local", display = "local changes")` are based, as in \@ref(fig:fetched).
+*`r glossary("Sourcetree")`* will show the "*History*" tab, selecting and emboldening the `r glossary("commit")` on which the `r glossary("local", display = "local changes")` are based, as in @fig-fetched.
 
-```{r, label = "fetched", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes fetched, but not integrated into the local repository, shown by the latest changes being higher than the current repository version in the history panel"}
-knitr::include_graphics("images/sourcetree/sourcetree_fetched.png")
-```
+![Changes fetched, but not integrated into the local repository, shown by the latest changes being higher than the current repository version in the history panel](images/sourcetree/sourcetree_fetched.png){#fig-fetched}
 
-## Pull Changes {#pull}
+## Pull Changes {#sec-pull}
 
-If the changes are to be `r glossary("merge", display = "merged")` into the `r glossary("local")` `r glossary("repository")`, then they can be "`r glossary("pull", display = "pulled")`". Click the "*Pull*" button. Again, the default options can be left as they are as in \@ref(fig:pull).
+If the changes are to be `r glossary("merge", display = "merged")` into the `r glossary("local")` `r glossary("repository")`, then they can be "`r glossary("pull", display = "pulled")`". Click the "*Pull*" button. Again, the default options can be left as they are as in @fig-pull.
 
-```{r, label = "pull", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Pull popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_pull.png")
-```
+![Pull popup in Sourcetree](images/sourcetree/sourcetree_pull.png){#fig-pull}
 
 Click "*Pull*" to bring in the changes. *`r glossary("Sourcetree")`* will show the updated "*History*" page, and the `r glossary("local", display = "local files")` will now include the changes made on *`r glossary("GitHub")`*.
 
-```{r, label = "pulled", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the history tab after pulling"}
-knitr::include_graphics("images/sourcetree/sourcetree_pulled.png")
-```
+![Sourcetree showing the history tab after pulling](images/sourcetree/sourcetree_pulled.png){#fig-pulled}
 
 # Merging Conflicts
 
@@ -354,81 +292,63 @@ In this section, changes will be made to both the `r glossary("local")` and `r g
 
 ## Make Changes Locally and on *GitHub*
 
-Similarly to \@ref(commit), open the `README.md` file in any text editor, and add a new line. Similarly to \@ref(remote-commit), add a different new line to `README.md` and `r glossary("commit")` it directly on *`r glossary("GitHub")`*.
+Similarly to @sec-commit, open the `README.md` file in any text editor, and add a new line. Similarly to @sec-remote-commit, add a different new line to `README.md` and `r glossary("commit")` it directly on *`r glossary("GitHub")`*.
 
 ## Pull Changes from *GitHub*
 
 ### Uncommitted Changes
 
-`r glossary("pull", display = "Pulling")` changes to a file which has `r glossary("commit", display = "uncommitted")` `r glossary("local", display = "local changes")` will result in an error, as shown in \@ref(fig:uncommitted-pull). The changes must be `r glossary("commit", display = "committed")` before the `r glossary("pull")` can be completed.
+`r glossary("pull", display = "Pulling")` changes to a file which has `r glossary("commit", display = "uncommitted")` `r glossary("local", display = "local changes")` will result in an error, as shown in @fig-uncommitted-pull. The changes must be `r glossary("commit", display = "committed")` before the `r glossary("pull")` can be completed.
 
-```{r, label = "uncommitted-pull", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing a failed pull due to uncommitted local changes conflicting with the remote changes"}
-knitr::include_graphics("images/sourcetree/sourcetree_uncommitted_conflict.png")
-```
+![Sourcetree showing a failed pull due to uncommitted local changes conflicting with the remote changes](images/sourcetree/sourcetree_uncommitted_conflict.png){#fig-uncommitted-pull}
 
 ### Committed Conflicting Changes
 
-The `r glossary("local", display = "local changes")` can either be `r glossary("commit", display = "committed")` or `r glossary("revert", display = "reverted")`. For this example, `r glossary("commit")` the changes as shown in section \@ref(commit).
+The `r glossary("local", display = "local changes")` can either be `r glossary("commit", display = "committed")` or `r glossary("revert", display = "reverted")`. For this example, `r glossary("commit")` the changes as shown in section @sec-commit.
 
 ## Merge Changes
 
 ### Pull
 
-Clicking the "*Pull*" button again will show that there are `r glossary("conflict", display = "conflicts")` to be resolved. Click "*Close*", and open the `r glossary("conflict", display = "conflicting")` file in your preferred editor. The `r glossary("conflict", display = "conflicting")` sections will be formatted as shown in \@ref(fig:resolve-conflict).
+Clicking the "*Pull*" button again will show that there are `r glossary("conflict", display = "conflicts")` to be resolved. Click "*Close*", and open the `r glossary("conflict", display = "conflicting")` file in your preferred editor. The `r glossary("conflict", display = "conflicting")` sections will be formatted as shown in @fig-resolve-conflict.
 
-```{r, label = "resolve-conflict", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing conflicts in the bottom-right panel"}
-knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict.png")
-```
+![Sourcetree showing conflicts in the bottom-right panel](images/sourcetree/sourcetree_resolve_conflict.png){#fig-resolve-conflict}
 
 ### Resolve Conflicts
 
-If the changes are to be fully overwritten by either the `r glossary("remote")` or the `r glossary("local", display = "local file")`, then the right-click menu, shown in \@ref(fig:resolve-conflicts-menu), can be used to "*Resolve Using 'Mine'*" to overwrite with `r glossary("local", display = "local changes")`, or "*Resolve Using 'Theirs'*" to overwrite with `r glossary("remote")` changes.
+If the changes are to be fully overwritten by either the `r glossary("remote")` or the `r glossary("local", display = "local file")`, then the right-click menu, shown in @fig-resolve-conflicts-menu, can be used to "*Resolve Using 'Mine'*" to overwrite with `r glossary("local", display = "local changes")`, or "*Resolve Using 'Theirs'*" to overwrite with `r glossary("remote")` changes.
 
-```{r, label = "resolve-conflicts-menu", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to manually resolve conflicts in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_resolve_conflict_menu.png")
-```
+![Menu item to manually resolve conflicts in Sourcetree](images/sourcetree/sourcetree_resolve_conflict_menu.png){#fig-resolve-conflicts-menu}
 
 If the `r glossary("conflict", display = "conflicts")` are more complex, then the `r glossary("conflict", display = "conflicting")` file will need to be edited and `r glossary("merge", display = "merged")` manually. Make the necessary changes to the file, making sure to remove the characters that were added to indicate `r glossary("merge")` `r glossary("conflict", display = "conflicts")` (i.e. '====' and '\<\<\< HEAD'). Once complete, use the right-click menu and select "*Mark Resolved*", which will automatically `r glossary("stage")` the changes.
 
 #### Example
 
-Consider a to-do list which contains an item "Email Frank". One user has changed the item to "Email Helen" because Frank has moved onto another project, and added an extra item "Book bouncy castle", as in \@ref(fig:merge-conflict-first-user).
+Consider a to-do list which contains an item "Email Frank". One user has changed the item to "Email Helen" because Frank has moved onto another project, and added an extra item "Book bouncy castle", as in @fig-merge-conflict-first-user.
 
-```{r, label = "merge-conflict-first-user", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes made by the first user"}
-knitr::include_graphics("images/complex_merge_first_user_changes.png")
-```
+![Changes made by the first user](images/complex_merge_first_user_changes.png){#fig-merge-conflict-first-user}
 
-After the first user's `r glossary("commit")` and `r glossary("push")` a second user had made changes without first `r glossary("pull", display = "pulling")` the first user's changes. They added 'about "Operation Falafel"' to the "Email Frank" item, to record what they are emailing about, and added an extra item "Submit paper abstract", as in \@ref(fig:merge-conflict-second-user).
+After the first user's `r glossary("commit")` and `r glossary("push")` a second user had made changes without first `r glossary("pull", display = "pulling")` the first user's changes. They added 'about "Operation Falafel"' to the "Email Frank" item, to record what they are emailing about, and added an extra item "Submit paper abstract", as in @fig-merge-conflict-second-user.
 
-```{r, label = "merge-conflict-second-user", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Changes made by the second user"}
-knitr::include_graphics("images/complex_merge_second_user_changes.png")
-```
+![Changes made by the second user](images/complex_merge_second_user_changes.png){#fig-merge-conflict-second-user}
 
-If the second user tries to `r glossary("commit")` and `r glossary("push")` their changes, they will be warned that their changes are out-of-date with respect to the `r glossary("remote")` `r glossary("repository", display = "repo")`. When they `r glossary("pull")` changes, they find that their `r glossary("local")` changes `r glossary("conflict")` with the `r glossary("remote")` changes, as in \@ref(fig:complex-conflict). Both sets of changes are valid, so they must be manually combined in order to keep all of the information. This is not something which can be done automatically; the manual changes must be done in an external editor, such as *Notepad++*. *`r glossary("Git")`* will mark the `r glossary("conflict", display = "conflicting")` changes with marker lines ('\<\<\< HEAD', '====' and '\>\>\>\> ...'), as in \@ref(fig:complex-conflict).
+If the second user tries to `r glossary("commit")` and `r glossary("push")` their changes, they will be warned that their changes are out-of-date with respect to the `r glossary("remote")` `r glossary("repository")`. When they `r glossary("pull")` changes, they find that their `r glossary("local")` changes `r glossary("conflict")` with the `r glossary("remote")` changes, as in @fig-complex-conflict. Both sets of changes are valid, so they must be manually combined in order to keep all of the information. This is not something which can be done automatically; the manual changes must be done in an external editor, such as *Notepad++*. *`r glossary("Git")`* will mark the `r glossary("conflict", display = "conflicting")` changes with marker lines ('\<\<\< HEAD', '====' and '\>\>\>\> ...'), as in @fig-complex-conflict.
 
-```{r, label = "complex-conflict", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Example of a complex merge conflict"}
-knitr::include_graphics("images/complex_merge_conflict.png")
-```
+![Example of a complex merge conflict](images/complex_merge_conflict.png){#fig-complex-conflict}
 
-In this case the "Email Frank" item can be combined to include both the new name, *and* the additional information. Both new items are also included in the final resolved file. Note that the marker lines must be manually removed. See the resolved `r glossary("conflict")` in \@ref(fig:complex-conflict-resolution).
+In this case the "Email Frank" item can be combined to include both the new name, *and* the additional information. Both new items are also included in the final resolved file. Note that the marker lines must be manually removed. See the resolved `r glossary("conflict")` in @fig-complex-conflict-resolution.
 
-```{r, label = "complex-conflict-resolution", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Example of the resolved conflict"}
-knitr::include_graphics("images/complex_merge_resolution.png")
-```
+![Example of the resolved conflict](images/complex_merge_resolution.png){#fig-complex-conflict-resolution}
 
 ### Stage, Commit and Push
 
-Once the `r glossary("conflict", display = "conflicts")` have been resolved, then they can be `r glossary("commit", display = "committed")` and `r glossary("push", display = "pushed")` as normal. A `r glossary("commit")` comment will be automatically generated for this `r glossary("merge")` `r glossary("commit")`, as shown in \@ref(fig:resolved-conflict-commit).
+Once the `r glossary("conflict", display = "conflicts")` have been resolved, then they can be `r glossary("commit", display = "committed")` and `r glossary("push", display = "pushed")` as normal. A `r glossary("commit")` comment will be automatically generated for this `r glossary("merge")` `r glossary("commit")`, as shown in @fig-resolved-conflict-commit.
 
-```{r, label = "resolved-conflict-commit", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree with automatically generated commit message for merge"}
-knitr::include_graphics("images/sourcetree/sourcetree_resolved_conflict_commit.png")
-```
+![Sourcetree with automatically generated commit message for merge](images/sourcetree/sourcetree_resolved_conflict_commit.png){#fig-resolved-conflict-commit}
 
-The "*History*" page will be shown again with the changes `r glossary("merge", display = "merged")` in, as if \@ref(fig:resolved-conflict-pushed).
+The "*History*" page will be shown again with the changes `r glossary("merge", display = "merged")` in, as if @fig-resolved-conflict-pushed.
 
-```{r, label = "resolved-conflict-pushed", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing the history tab after pushing"}
-knitr::include_graphics("images/sourcetree/sourcetree_resolved_conflict_pushed.png")
-```
+![Sourcetree showing the history tab after pushing](images/sourcetree/sourcetree_resolved_conflict_pushed.png){#fig-resolved-conflict-pushed}
 
 # Branches
 
@@ -444,65 +364,49 @@ Whilst often not necessary when working individually on a project, "`r glossary(
 
 Go to the project home and click on the `r glossary("branch", display = "branches")` button, titled "*1 branch*", in the top-left.
 
-```{r, label = "github-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Branches button on GitHub"}
-knitr::include_graphics("images/github/github_branch_button.png")
-```
+![Branches button on GitHub](images/github/github_branch_button.png){#fig-github-branch}
 
 *`r glossary("GitHub")`* will display all of the current `r glossary("branch", display = "branches")` in the `r glossary("repository")`; currently there is only one `r glossary("branch")`, "main".
 
-```{r, label = "github-branches", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Branches page on GitHub"}
-knitr::include_graphics("images/github/github_branches.png")
-```
+![Branches page on GitHub](images/github/github_branches.png){#fig-github-branches}
 
 Click the "*New Branch*" button, in the top-right, and enter a `r glossary("branch")` name. `r glossary("branch", display = "Branches")` must have unique names to identify them. *`r glossary("GitHub")`* allows for `r glossary("branch", display = "branches")` to be created from any other `r glossary("branch")`, but in this case there is only "main". Click "*Create new branch*".
 
-```{r, label = "github-new-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Create branch popup on GitHub"}
-knitr::include_graphics("images/github/github_new_branch.png")
-```
+![Create branch popup on GitHub](images/github/github_new_branch.png){#fig-github-new-branch}
 
 *`r glossary("GitHub")`* will return to the `r glossary("branch", display = "branches")` page, but the new `r glossary("branch")` is now present. This can now be `r glossary("checkout", display = "checked out")` in *`r glossary("Sourcetree")`*.
 
-```{r, label = "github-new-branches", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Branches page on GitHub after new branch has been created"}
-knitr::include_graphics("images/github/github_new_branches.png")
-```
+![Branches page on GitHub after new branch has been created](images/github/github_new_branches.png){#fig-github-new-branches}
 
-#### Checkout branch {#checkout}
+#### Checkout branch {#sec-checkout}
 
 To access this `r glossary("branch")` in *`r glossary("Sourcetree")`*, it must be `r glossary("checkout", display = "checked out")`. In order for *`r glossary("Sourcetree")`* to detect the newly created `r glossary("remote")` `r glossary("branch")`, changes must first be `r glossary("pull", display = "pulled")`. Once that has completed, find the `r glossary("branch")` by expanding the "*Remotes*" section in the left-hand panel, and select it. Right click on the selected `r glossary("branch")` and click "Checkout origin/...".
 
-```{r, label = "checkout-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to checkout a remote branch within Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_checkout_branch.png")
-```
+![Menu item to checkout a remote branch within Sourcetree](images/sourcetree/sourcetree_checkout_branch.png){#fig-checkout-branch}
 
 Leave the default options in the popup, and click "*OK*". Once it has finished processing, the working copy is now on the `r glossary("branch")`.
 
-```{r, label = "checkout-new-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Remote branch checkout popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_checkout_new_branch.png")
-```
+![Remote branch checkout popup in Sourcetree](images/sourcetree/sourcetree_checkout_new_branch.png){#fig-checkout-new-branch}
 
 ### Using *Sourcetree*
 
 #### Checkout the Base Branch
 
-Before a `r glossary("branch")` is to be created, the base for the new `r glossary("branch")` must be `r glossary("checkout", display = "checked out")`. For a branch on the `r glossary("remote")` `r glossary("repository")`, this is described in \@ref(checkout). If the base branch is already `r glossary("checkout", display = "checked out")`, for instance "main" in this case, then skip to \@ref(sourcetree-create-branch).
+Before a `r glossary("branch")` is to be created, the base for the new `r glossary("branch")` must be `r glossary("checkout", display = "checked out")`. For a branch on the `r glossary("remote")` `r glossary("repository")`, this is described in @sec-checkout. If the base branch is already `r glossary("checkout", display = "checked out")`, for instance "main" in this case, then skip to @sec-sourcetree-create-branch.
 
 A `r glossary("branch")` on the `r glossary("local")` `r glossary("repository")` can also be used as a base. It can be `r glossary("checkout", display = "checked out")` by right-clicking on the `r glossary("branch")` within the "*Branches*" section in the left-hand panel, and clicking "*Checkout...*". The `r glossary("branch")` which is currently `r glossary("checkout", display = "checked out")` is shown in bold.
 
-#### Create the Branch {#sourcetree-create-branch}
+#### Create the Branch {#sec-sourcetree-create-branch}
 
 In *`r glossary("Sourcetree")`*, click the "*Branch*" button in the top bar, and enter the name of the new `r glossary("branch")`. Click "*Create Branch*", and it will be created and `r glossary("checkout", display = "checked out")`.
 
-```{r, label = "sourcetree-create-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "New branch popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_create_branch.png")
-```
+![New branch popup in Sourcetree](images/sourcetree/sourcetree_create_branch.png){#fig-sourcetree-create-branch}
 
 To add the new `r glossary("branch")` to the `r glossary("remote")` `r glossary("repository")` on *`r glossary("GitHub")`*, changes must be `r glossary("push", display = "pushed")`. Click the "*Push*" button in the top bar, then select only the new `r glossary("branch")` to be `r glossary("push", display = "pushed")`. The "*Track?*" checkboxes can be left as the defaults. Click "*Push*" to add the new `r glossary("branch")` to the `r glossary("remote")` `r glossary("repository")`.
 
 For any future `r glossary("commit", display = "commits")` on a `r glossary("branch")`, it is only necessary to `r glossary("push")` the current working `r glossary("branch")`
 
-```{r, label = "push-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Push popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_push_new_branch.png")
-```
+![Push popup in Sourcetree](images/sourcetree/sourcetree_push_new_branch.png){#fig-push-branch}
 
 ## Merging Branches
 
@@ -510,9 +414,7 @@ After changes are completed on a `r glossary("branch")`, they should be `r gloss
 
 First, make a change, `r glossary("commit")` it to the new `r glossary("branch")` and `r glossary("push")` the `r glossary("commit")`. In this case, "aims" have been added to the README file.
 
-```{r, label = "add-aims", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Sourcetree showing local changes in commit page"}
-knitr::include_graphics("images/sourcetree/sourcetree_add_aims.png")
-```
+![Sourcetree showing local changes in commit page](images/sourcetree/sourcetree_add_aims.png){#fig-add-aims}
 
 ### Merging in *GitHub*
 
@@ -520,89 +422,91 @@ knitr::include_graphics("images/sourcetree/sourcetree_add_aims.png")
 
 Go to the `r glossary("repository")` in *`r glossary("GitHub")`*, and select the `r glossary("branch")` in the drop-down box in the top-left. You may see that the `r glossary("branch")` is ahead of the main `r glossary("branch")`, or that changes were recently `r glossary("push", display = "pushed")` to the `r glossary("branch")`. To `r glossary("merge")` the `r glossary("branch", display = "branches")`, click on the green "*Compare and pull request*" button.
 
-```{r, label = "recent-push", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "GitHub showing recent changes to branch"}
-knitr::include_graphics("images/github/github_recent_push.png")
-```
+![GitHub showing recent changes to branch](images/github/github_recent_push.png){#fig-recent-push}
 
 If the `r glossary("branch")` is older and hasn't had recent `r glossary("push", display = "pushes")`, then a new `r glossary("pull request")` can be opened by clicking on "*Pull requests*" at the top of the page.
 
-```{r, label = "pull-requests", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Pull requests page on GitHub"}
-knitr::include_graphics("images/github/github_pull_requests.png")
-```
+![Pull requests page on GitHub](images/github/github_pull_requests.png){#fig-pull-requests}
 
 Click "*New pull request*" to open the configuration page, then select the `r glossary("branch")` to `r glossary("merge")` into main.
 
-```{r, label = "new-pull-request", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Comparing changes page on GitHub"}
-knitr::include_graphics("images/github/github_selected_pull_request.png")
-```
+![Comparing changes page on GitHub](images/github/github_selected_pull_request.png){#fig-new-pull-request}
 
 Add a title and a description, then click "*Create pull request*".
 
-```{r, label = "create-pull-request", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Create pull request page on GitHub"}
-knitr::include_graphics("images/github/github_create_pull_request.png")
-```
+![Create pull request page on GitHub](images/github/github_create_pull_request.png){#fig-create-pull-request}
 
 #### Merge Pull Request
 
 Within the created `r glossary("pull request")`, the changes can be reviewed. When happy with the changes, click "*Merge pull request*". If changes cannot be automatically `r glossary("merge", display = "merged")`, then *`r glossary("GitHub")`* will ask you to resolve `r glossary("conflict", display = "conflicts")` before `r glossary("merge", display = "merging")`.
 
-```{r, label = "created-pull-request", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Created pull request page on GitHub"}
-knitr::include_graphics("images/github/github_created_pull_request.png")
-```
+![Created pull request page on GitHub](images/github/github_created_pull_request.png){#fig-created-pull-request}
 
 The default `r glossary("commit")` message can be left unchanged unless required, then click "*Confirm merge*".
 
-```{r, label = "confirm-merge", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Merge options on GitHub"}
-knitr::include_graphics("images/github/github_confirm_merge.png")
-```
+![Merge options on GitHub](images/github/github_confirm_merge.png){#fig-confirm-merge}
 
 Click "*Delete branch*" to delete the `r glossary("branch")` from the `r glossary("remote")` `r glossary("repository")`.
 
-```{r, label = "delete-remote-branch-github", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Merge confirmation on GitHub"}
-knitr::include_graphics("images/github/github_delete_branch.png")
-```
+![Merge confirmation on GitHub](images/github/github_delete_branch.png){#fig-delete-remote-branch-github}
 
 Returning to the home page of the project will show that the changes are now present on main and that there is only one `r glossary("branch")` on the project.
 
-```{r, label = "github-merged", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Repository home page on GitHub showing one branch and including changes from merged branch"}
-knitr::include_graphics("images/github/github_merged.png")
-```
+![Repository home page on GitHub showing one branch and including changes from merged branch](images/github/github_merged.png){#fig-github-merged}
 
-#### Checkout Main Branch in *Sourcetree* {#post-merge-checkout}
+#### Checkout Main Branch in *Sourcetree* {#sec-post-merge-checkout}
 
 Back in *`r glossary("Sourcetree")`*, the main `r glossary("branch")` needs to be `r glossary("checkout", display = "checked out")`, as the `r glossary("local")` `r glossary("branch")` no longer points to a `r glossary("remote")` `r glossary("branch")`. Select the "main" `r glossary("branch")` in the "*Branches*" section in the left-hand panel, then right-click and click "Checkout main...".
 
-```{r, label = "post-merge-checkout", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to checkout the main branch in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_checkout_main.png")
-```
+![Menu item to checkout the main branch in Sourcetree](images/sourcetree/sourcetree_checkout_main.png){#fig-post-merge-checkout}
 
-Once the `r glossary("checkout")` has completed, `r glossary("pull")` from the `r glossary("remote")` `r glossary("repository")` to get the `r glossary("merge", display = "merged")` changes. You can also delete the removed `r glossary("branch", display = "branches")` from *`r glossary("Sourcetree")`* as in section \@ref(delete-sourcetree-branches).
+Once the `r glossary("checkout")` has completed, `r glossary("pull")` from the `r glossary("remote")` `r glossary("repository")` to get the `r glossary("merge", display = "merged")` changes. You can also delete the removed `r glossary("branch", display = "branches")` from *`r glossary("Sourcetree")`* as in section @sec-delete-sourcetree-branches.
 
 ### Merging in *Sourcetree*
 
 #### Merge Changes
 
-In *`r glossary("Sourcetree")`*, `r glossary("checkout")` the main `r glossary("branch")`, as in \@ref(post-merge-checkout), then click "*Merge*" in the top bar. Select the most recent `r glossary("commit")` from the `r glossary("branch")`, then click "*OK*". The `r glossary("merge")` will be completed and the `r glossary("local")` main `r glossary("branch")` will include the changes from the `r glossary("branch")`.
+In *`r glossary("Sourcetree")`*, `r glossary("checkout")` the main `r glossary("branch")`, as in @sec-post-merge-checkout, then click "*Merge*" in the top bar. Select the most recent `r glossary("commit")` from the `r glossary("branch")`, then click "*OK*". The `r glossary("merge")` will be completed and the `r glossary("local")` main `r glossary("branch")` will include the changes from the `r glossary("branch")`.
 
-```{r, label = "select-merge-commit", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Merge popup in Sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_select_merge_commit.png")
-```
+![Merge popup in Sourcetree](images/sourcetree/sourcetree_select_merge_commit.png){#fig-select-merge-commit}
 
 The main `r glossary("branch")` should then be `r glossary("push", display = "pushed")` to the `r glossary("remote")` `r glossary("repository")`.
 
-#### Delete Branches {#delete-sourcetree-branches}
+#### Delete Branches {#sec-delete-sourcetree-branches}
 
 The `r glossary("branch")` can now be deleted both `r glossary("local", display = "locally")` and `r glossary("remote", display = "remotely")`. The `r glossary("local")` `r glossary("repository")` can be deleted in the same right-click menu used to `r glossary("checkout")` a `r glossary("local")` `r glossary("branch")`.
 
-```{r, label = "delete-local-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to delete a local branch in sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_delete_local_branch.png")
-```
+![Menu item to delete a local branch in sourcetree](images/sourcetree/sourcetree_delete_local_branch.png){#fig-delete-local-branch}
 
 The `r glossary("remote")` `r glossary("repository")` can be deleted in the same right-click menu used to `r glossary("checkout")` a `r glossary("remote")` `r glossary("branch")`.
 
-```{r, label = "delete-remote-branch", dpi = 50, fig.align = "center", echo = FALSE, fig.cap = "Menu item to delete a remote branch in sourcetree"}
-knitr::include_graphics("images/sourcetree/sourcetree_delete_remote_branch.png")
-```
+![Menu item to delete a remote branch in sourcetree](images/sourcetree/sourcetree_delete_remote_branch.png){#fig-delete-remote-branch}
+
+# Returning to an Earlier Version of a Branch
+
+It sometimes happens that a `r glossary("commit")` or series of `r glossary("commit", display = "commits")` need to be rolled back because they have significantly broken functionality, or they are simply no longer needed. In these cases, it is often simpler to roll back to an earlier version of the `r glossary("branch")`, rather than manually undoing the changes. It is possible to discard those `r glossary("commit", display = "commits")`, where they will be removed from the `r glossary("repository")` `r glossary("history")`, but this is a more complex process, using the *`r glossary("Git")`* `r glossary("command line")` tool. The method described here maintains the `r glossary("history")`.
+
+Firstly, go to the `r glossary("repository")` home page on *`r glossary("GitHub")`*, then click on the "x Commits" button, as in @fig-github-commits-button, to show the full `r glossary("commit")` `r glossary("history")` of the currently selected `r glossary("branch")`.
+
+![Repository home page on GitHub, with the commits button highlighted](images/github/github_commits_button.png){#fig-github-commits-button}
+
+Navigate to the last `r glossary("commit")` before the `r glossary("commit", display = "commits")` to be rolled back, and click on the "<>" button which will show the `r glossary("repository")` as it was after that `r glossary("commit")`, as in @fig-github-browse-repo-button.
+
+![Repository commit history on GitHub with the "Browse repository at this point" button highlighted](images/github/github_browse_repo_button.png){#fig-github-browse-repo-button}
+
+The `r glossary("repository")` will look like it does on the home page, but with the `r glossary("commit")` selected. The entire contents can be downloaded by clicking on the "Code" button, the clicking "Download ZIP" on the resulting popup, as in @fig-github-download-zip. This will download the entire `r glossary("repository")` from that `r glossary("commit")`, in a compressed format (*.zip*).
+
+![Buttons to download the repository in *.zip* format. Note the commit name highlighted in yellow.](images/github/github_download_zip.png){#fig-github-download-zip}
+
+The downloaded *.zip* file should be moved into the `r glossary("repository")` folder on your `r glossary("local")` computer, and extracted there. This will create a new folder within the `r glossary("repository")`. All of the files other than the newly extracted folder, and the ".git" folder should be deleted, as in @fig-explorer-extracted-zip.
+
+![Delete all repository files, and the *.zip* file](images/explorer_delete_files.png){#fig-explorer-extracted-zip}
+
+Every file and folder within the folder extracted from the *.zip* should be moved into the `r glossary("repository")` folder, and the now-empty folder can be deleted, as in @fig-explorer-replace-files.
+
+![Extracted files moved into the repository and the empty folder deleted](images/explorer_replace_files.png){#fig-explorer-replace-files}
+
+The changes can now be `r glossary("commit", display = "committed")`, as in @sec-commit. Once the changes have been `r glossary("commit", display = "committed")`, the `r glossary("repository")` will be back to the state of the selected `r glossary("commit")`, but the `r glossary("history")` of the rolled-back `r glossary("commit", display = "commits")` will remain.
 
 # Other Resources
 
