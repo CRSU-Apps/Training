@@ -6,16 +6,16 @@ library(shiny)
 
 # Define UI 
 ui <- fluidPage(
-  htmlOutput("how_to_doc")
+  tags$iframe(
+    height = "100%",
+    width = "100%",
+    style = "position:fixed; top:0; left:0; bottom:0; right:0; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;",
+    src = paste0("UsingGit.html")
+  )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-
-  getPage<-function() {
-    return(includeHTML("UsingGit.html"))
-  }
-  output$how_to_doc<-renderUI({getPage()})
 }
 
 # Run the application 
