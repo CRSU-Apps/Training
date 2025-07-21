@@ -446,7 +446,7 @@ The default `r glossary("commit")` message can be left unchanged unless required
 
 ![Merge options on GitHub](images/github/github_confirm_merge.png){#fig-confirm-merge}
 
-Click "*Delete branch*" to delete the `r glossary("branch")` from the `r glossary("remote")` `r glossary("repository")`.
+If the branch will no longer be used, click "*Delete branch*" to delete the `r glossary("branch")` from the `r glossary("remote")` `r glossary("repository")`.
 
 ![Merge confirmation on GitHub](images/github/github_delete_branch.png){#fig-delete-remote-branch-github}
 
