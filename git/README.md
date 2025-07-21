@@ -4,6 +4,7 @@ This is a document which explains how to use *Git*, *GitHb* and *SourceTree* to 
 
 ## Developer Notes
 - When rendering the Quarto file, the output must be saved to `www/UsingGit.html`
+  - When committing changes, include the folder `www/UsingGit_files`
 - Any new images must be placed in `www/images`
 - The app uses an iframe to display the rendered quarto output.
   - This allow it to be deployed to shinyapps.io
