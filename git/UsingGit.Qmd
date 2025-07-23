@@ -16,6 +16,7 @@ format:
 - All items found in the glossary are linked, every time they are used.
 --->
 ```
+
 ```{r, echo = FALSE, message = FALSE, include = FALSE}
 # To get the glossary working correctly, the {glossary} package must be installed from GitHub
 # remotes::install_github("https://github.com/debruine/glossary")
@@ -42,6 +43,7 @@ glossary::glossary_popup("hover")
 - [ ] Make references to sections consistent
 --->
 ```
+
 # Introduction
 
 ## What is 'Version Control'?
@@ -148,7 +150,7 @@ After clicking the "*Clone*" button, *`r glossary("Sourcetree")`* will open the 
 
 If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure @fig-directory-error). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard.
 
-![Error pop-up regarding permissions with the chosen directory](images/sourcetree/sourcetree_source_error.png){#fig-directory-error}
+![Error pop-up regarding permissions with the chosen directory](images/sourcetree/sourcetree_directory_error.png){#fig-directory-error}
 
 # Preventing File Being Committed {#sec-git-ignore}
 
@@ -490,7 +492,7 @@ Firstly, go to the `r glossary("repository")` home page on *`r glossary("GitHub"
 
 ![Repository home page on GitHub, with the commits button highlighted](images/github/github_commits_button.png){#fig-github-commits-button}
 
-Navigate to the last `r glossary("commit")` before the `r glossary("commit", display = "commits")` to be rolled back, and click on the "<>" button which will show the `r glossary("repository")` as it was after that `r glossary("commit")`, as in @fig-github-browse-repo-button.
+Navigate to the last `r glossary("commit")` before the `r glossary("commit", display = "commits")` to be rolled back, and click on the "\<\>" button which will show the `r glossary("repository")` as it was after that `r glossary("commit")`, as in @fig-github-browse-repo-button.
 
 ![Repository commit history on GitHub with the "Browse repository at this point" button highlighted](images/github/github_browse_repo_button.png){#fig-github-browse-repo-button}
 
@@ -510,8 +512,8 @@ The changes can now be `r glossary("commit", display = "committed")`, as in @sec
 
 # Other Resources
 
-- [Happy Git and GitHub for the useR](https://happygitwithr.com/)
-  - Getting started with Git and GitHub specifically for *R* users.
+-   [Happy Git and GitHub for the useR](https://happygitwithr.com/)
+    -   Getting started with Git and GitHub specifically for *R* users.
 
 If you find yourself stuck with any of the topics covered in this document, please feel free to contact us at [clareece.nevill\@leicester.ac.uk](mailto:clareece.nevill@leicester.ac.uk){.email} or [janion.nevill\@leicester.ac.uk](mailto:janion.nevill@leicester.ac.uk){.email}.
 
