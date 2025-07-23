@@ -148,7 +148,7 @@ After clicking the "*Clone*" button, *`r glossary("Sourcetree")`* will open the 
 
 ### Possible Directory Error
 
-If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure @fig-directory-error). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard.
+If you are using a university laptop, depending on where you `r glossary("clone")` the `r glossary("repository")` within your computer, you may get the following error pop up (figure @fig-directory-error). If this happens, you'll need to do as they suggest. Open *`r glossary("Git Bash")`* by searching for it in the windows search bar, and type in the text suggested by the error message, then simply hit the enter key on your keyboard. The required text is highlighted in @fig-directory-error, but it will be specific to your computer.
 
 ![Error pop-up regarding permissions with the chosen directory](images/sourcetree/sourcetree_directory_error.png){#fig-directory-error}
 
