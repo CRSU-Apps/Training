@@ -1,0 +1,237 @@
+---
+title: "Developing in *{shinyscholar}*"
+format: html
+---
+
+# Introduction
+
+This document has been written to serve as a practical guide on how to develop new modules and components in a *{shinyscholar}* app. It covers the process of creating a new module in an existing component, or in a new component.
+
+## Modules vs Components
+
+![A screenshot of MetaInsight on the "Setup" component](images/metainsight_setup.png){#fig-metainsight-setup}
+
+### Components
+
+A component is a set of operations and results which can be logically grouped together. The individual operations and results can be quite varied, but they come together to work towards a common purpose. In @fig-metainsight-setup we see the "Setup" component, which contains operations related to preparing data and options for analysis. The full list of components in this app contains:
+
+- Intro
+  - Gives the user an introduction to the app
+- Setup
+  - Prepare data and options for analysis
+- Summary
+  - Summarise the data
+- Frequentist
+  - Run and evaluate a frequentist meta-analysis of the data
+- Bayesian
+  - Run and evaluate a bayesian meta-analysis of the data
+- Reproduce
+  - Download a reproducible version of the analysis that has been run
+
+### Modules
+
+A module is an individual operation, and its outputs, within a component. This can be something simple such as selecting options, or it could be more involved, such as running an analysis and outputting some key findings. In @fig-metainsight-setup we see the modules in the "Setup" component:
+
+- Load data
+- Configure analysis
+- Load a previous session
+- Upgrade old data
+
+Each module has a well-defined function, but they are used together to setup the data and analysis options. Modules may use inputs from other modules and components via a "common" object.
+
+# Creating a New Module
+
+*{shinyscholar}* provides a helper function to create the skeleton of a new module. The following shows the typical parameters used in the function, where `<MODULE_IDENTIFIER>` is typically of the form `<COMPONENT_NAME>_<MODULE_NAME>` eg. `bayesian_forest` for the forest plot module in the bayesian analysis component.
+
+```
+shinyscholar::create_module(id = "<MODULE_IDENTIFIER>", dir = getwd(), result = TRUE, rmd = TRUE, save = TRUE)
+```
+
+This will create the required files, with the required structures, in the correct locations:
+
+- In the `R` directory:
+  - `<MODULE_IDENTIFIER>_f.R`
+    - Contains one function named `<MODULE_IDENTIFIER>`
+    - This is the function that creates the output
+    - It is separated from the app functionality so that it can be used and tested independently
+- In the `inst/shiny/modules` directory:
+  - `<MODULE_IDENTIFIER>.md`
+    - A markdown file to describe the functionality of the module, including any useful background for the user
+  - `<MODULE_IDENTIFIER>.R`
+    - An R file containing:
+      - Function `<MODULE_IDENTIFIER>_module_ui`
+        - Inputs for the module
+      - Function `<MODULE_IDENTIFIER>_module_server`
+        - Server function to run the module and populate the outputs
+      - Function `<MODULE_IDENTIFIER>_module_result`
+        - Outputs for the module
+      - Function `<MODULE_IDENTIFIER>_module_rmd`
+        - Create a list of parameters to use in the reproducible R-markdown file
+  - `<MODULE_IDENTIFIER>.rmd`
+    - An R-markdown file to recreate the outputs independently of the app
+  - `<MODULE_IDENTIFIER>.yml`
+    - A YAML file containing details of the module
+
+Those files will not function in the skeleton state, but most of the "boilerplate" code will have been created. They will need to be populated with the required functionality and parameters for the module.
+
+## `<MODULE_IDENTIFIER>_f.R`
+
+Found in the `R` directory.
+
+This contains all functions for creating the outputs for the module. This can be spread across multiple functions, and those functions do not all need to be tagged with `@export`, only those which are called by the module directly. If a module displays multiple plots, for example, there can be multiple exported functions.
+
+## `<MODULE_IDENTIFIER>.md`
+
+Found in the `inst/shiny/modules` directory.
+
+Informs the user about the functionality of the module. Typically the title will be of the format `**module: <MODULE_NAME>**`, and it will contain sections:
+
+- `**BACKGROUND**`
+  - Describes the background of the module's functionality
+- `**IMPLEMENTATION**`
+  - Describes exactly what the module does, and how
+- `**REFERENCES**`
+  - Lists any references to external sources which are important to the rest of the description
+
+## `<MODULE_IDENTIFIER>.R`
+
+Found in the `inst/shiny/modules` directory.
+
+Contains the code for running the module within the app.
+
+### `<MODULE_IDENTIFIER>_module_ui()`
+
+Creates the inputs for the module, which will be displayed in the left-hand side bar of the app. By default this includes only a "Run" button. Any parameters which will affect the outputs should be represented by an input here. If the module is supposed to run automatically, then the run button can be removed. This should not contain any outputs.
+
+All inputs must be namespaced using `ns()`.
+
+### `<MODULE_IDENTIFIER>_module_server()`
+
+Contains the server code which will respond to the inputs and populate the outputs.
+
+#### `observeEvent()` or `observe()`
+
+By default an `observeEvent()` block will be created to run when the "Run" button is pressed. If the module is intended to run automatically, this should be changed to an `observe()` block. It has the following sections:
+
+- `# WARNING ####`
+  - Report any warnings using `common$logger |> shinyscholar::writeLog()`
+- `# FUNCTION CALL ####`
+  - Call the module function(s) to make any calculations. This should not generate anything graphical, such as plots
+- `# LOAD INTO COMMON ####`
+  - Load parameters and results into `common` using the format `common$parameter <- input$parameter`
+- `# METADATA ####`
+  - Save any metadata into `common` using the format `common$meta$<MODULE_IDENTIFIER>$parameter <- parameter`
+  - Commonly this is only a parameter named "used" which will inform the R-markdown whether or not the module should be included in the reproducible output.
+- `# TRIGGER ####`
+  - Trigger any watchers using `gargoyle::trigger("<MODULE_IDENTIFIER>")`
+
+#### Render Outputs
+
+Add any `Render_()` calls to render to the outputs of the module, as would be done in a normal shiny app. The values should be taken from `common`, rather than directly from the inputs, and the render statement should begin with a call to `gargoyle::watch("<MODULE_IDENTIFIER>")`, and a call to `req()` for any objects which are required from other modules.
+
+#### Return Statement
+
+Provide functions to save and load input parameters and outputs that should be saved when the session is saved.
+
+##### Save
+
+The return from the save function should be of the format:
+
+```
+list(
+  parameter_1 = input$parameter_1,
+  parameter_2 = input$parameter_2
+)
+```
+
+##### Load
+
+The contents of the save function should be of the format:
+
+```
+update*(session, "parameter_1", value = state$parameter_1)
+update*(session, "parameter_2", value = state$parameter_2)
+```
+
+### `<MODULE_IDENTIFIER>_module_result()`
+
+Creates the outputs for the module, which will be displayed in the main panel of the app. By default this includes only a verbatim text output. This should not contain any inputs.
+
+All outputs must be namespaced using `ns()`.
+
+### `<MODULE_IDENTIFIER>_module_rmd()`
+
+Store the parameters to be passed to the R-markdown file when creating the reproducible output. The values are taken from `common` and put into a list in the following format:
+
+```
+list(
+  <MODULE_IDENTIFIER>_knit = !is.null(common$meta$<MODULE_IDENTIFIER>$used),
+  <MODULE_IDENTIFIER>_parameter_1 = common$<MODULE_IDENTIFIER>_parameter_1,
+  <MODULE_IDENTIFIER>_parameter_2 = common$<MODULE_IDENTIFIER>_parameter_2
+)
+```
+
+This should always contain a parameter named `<MODULE_IDENTIFIER>_knit` which defines whether or not the module's output should be included in the reproducible output. This is usually whether or not the module has been run, which should be set in the metadata object within `common` when the module runs.
+
+Note that even if a parameter is exported by another module, it still needs to be exported by every module that needs to use it in the R-markdown output. If a parameter is not exported by the module that will use it, then the parameter will not be accessible in the module's scope.
+
+## `<MODULE_IDENTIFIER>.rmd`
+
+Found in the `inst/shiny/modules` directory.
+
+This file contains the reproducible R-markdown content for the module. It uses the parameters exported by the `<MODULE_IDENTIFIER>_module_rmd()` function in the `<MODULE_IDENTIFIER>.R` file. It is broken into 2 sections by default, but it can contain as many sections as is needed. The first section should contain a title and any preamble describing what the module does and any relevant details about the output. The second section contains the output, which should be the same as what is output in the UI by the module.
+
+Variables from the module can be accessed by referencing them surrounded by 2 pairs of curly braces eg. `{{parameter}}`.
+
+## `<MODULE_IDENTIFIER>.yml`
+
+Found in the `inst/shiny/modules` directory.
+
+This *YAML* file defines the basic information about the module:
+
+- `component`
+  - The name of the component in which this module is found
+- `short_name`
+  - Name of the module to be displayed in the menu for the component
+- `long_name`
+  - Name of the module to be displayed in the module
+- `authors`
+  - A list of the module authors' names
+- `package`
+  - A list of the names of the packages used by the module
+
+## `test-<MODULE_IDENTIFIER>.R`
+
+Found in the `tests/testthat` directory.
+
+This file contains all of the unit tests for the function(s) in `R/<MODULE_IDENTIFIER>_f.R`, as well as any end-to-end tests of the module code found in `inst/shiny/modules/<MODULE_IDENTIFIER>.R`.
+
+## Other Changes
+
+There are a handful of other changes which must be made to existing files in order to add a new module to the app. Once these are made, the module should be complete and ready to run.
+
+### `NAMESPACE`
+
+A new `export()` line must be added for the function found(s) in `R/<MODULE_IDENTIFIER_f.R`. By convention these are added in alphabetical order.
+
+### `inst/shiny/global.R`
+
+In the vector named `base_module_configs`, the file path to the module's *YAML* file must be added. these are added in the order in which they will appear within the component.
+
+### `inst/shiny/common.R`
+
+The `common_class` object holds all of the objects which are stored within each module in the app. Any parameter which is to be stored in a module must be added to the list of public fields in this object, and should be cleared in the `reset()` function.
+
+# Creating a New Component
+
+A component cannot exist without modules within it, so everything in the previous section will need to be done for the new modules, as well as a few extra steps to create the component itself. Ensure that the newly created modules define the newly created component name in the *YAML* file.
+
+## `inst/shiny/global.R`
+
+The name of the module must be added to the `COMPONENTS` vector. These are added in the order that they will appear in the app.
+
+## `inst/shiny/ui.R`
+
+In the `page_navbar`, a new `nav_panel` must be added for the new component. These are added in the order that they will appear in the app.
+
+In the `layout_sidebar`, a new call to `insert_modules_ui()` must be added, also in the order that the components will appear in the app.
