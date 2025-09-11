@@ -1,6 +1,10 @@
 ---
 title: "Developing in *{shinyscholar}*"
-format: html
+format:
+  html:
+    number-sections: true
+    toc: true
+    toc_float: true
 ---
 
 # Introduction
@@ -38,6 +42,16 @@ A module is an individual operation, and its outputs, within a component. This c
 - Upgrade old data
 
 Each module has a well-defined function, but they are used together to setup the data and analysis options. Modules may use inputs from other modules and components via a "common" object.
+
+## Running the App After Making Changes
+
+To run the app after making code changes, the following 3 commands should be run.
+
+```
+detach("package:metainsight", unload = TRUE)
+devtools::install_local(path = getwd(), force = TRUE)
+metainsight::run_metainsight()
+```
 
 # Creating a New Module
 
@@ -235,3 +249,385 @@ The name of the module must be added to the `COMPONENTS` vector. These are added
 In the `page_navbar`, a new `nav_panel` must be added for the new component. These are added in the order that they will appear in the app.
 
 In the `layout_sidebar`, a new call to `insert_modules_ui()` must be added, also in the order that the components will appear in the app.
+
+# Example - New Component with 2 New Modules
+
+This example contains a new "Maths" component, with 2 new modules: "Select" and "Plot". The "Select" module simply allows the user to select 2 numbers which are displayed and stored into `common`. The "Plot" module plots a 2 dimensional array of squares where the dimensions are the 2 numbers chosen in the "Select" module.
+
+## "Select" Module
+
+### `inst/shiny/modules/maths_select.R`
+
+```{verbatim}
+maths_select_module_ui <- function(id) {
+  ns <- shiny::NS(id)
+  div(
+    h3("Select numbers"),
+    numericInput(inputId = ns("number_1"), label = "First Number", value = 1, min = 1, max = 999999, step = 1),
+    numericInput(inputId = ns("number_2"), label = "Second Number", value = 1, min = 1, max = 999999, step = 1),
+    actionButton(ns("run"), "Select Numbers")
+  )
+}
+
+maths_select_module_server <- function(id, common, parent_session) {
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns
+
+    observeEvent(input$run, {
+      # WARNING ####
+      if (input$number_1 > 999999) {
+        common$logger |>
+          shinyscholar::writeLog(glue::glue("First number selected ({input$number_1}) is greater than 999999"))
+      }
+      if (input$number_2 > 999999) {
+        common$logger |>
+          shinyscholar::writeLog(glue::glue("Second number selected ({input$number_2}) is greater than 999999"))
+      }
+      
+      # FUNCTION CALL ####
+
+      # LOAD INTO COMMON ####
+      common$maths_number_1 <- input$number_1
+      common$maths_number_2 <- input$number_2
+
+      # METADATA ####
+      common$meta$maths_select$used <- TRUE
+
+      # TRIGGER
+      gargoyle::trigger("maths_select")
+
+      show_results(parent_session)
+    })
+    
+    output$number_text_1 <- renderText({
+      gargoyle::watch("maths_select")
+      glue::glue("First number: {common$maths_number_1}")
+    })
+    
+    output$number_text_2 <- renderText({
+      gargoyle::watch("maths_select")
+      glue::glue("Second number: {common$maths_number_2}")
+    })
+    
+    return(
+      list(
+        save = function() {
+          list(
+            ### Manual save start
+            ### Manual save end
+            number_1 = input$number_1,
+            number_2 = input$number_2
+          )
+        },
+        load = function(state) {
+          ### Manual load start
+          ### Manual load end
+          updateNumericInput(session, "number_1", value = state$number_1)
+          updateNumericInput(session, "number_2", value = state$number_2)
+        }
+      )
+    )
+  })
+}
+
+maths_select_module_result <- function(id) {
+  ns <- NS(id)
+  div(
+    textOutput(outputId = ns("number_text_1")),
+    textOutput(outputId = ns("number_text_2"))
+  )
+}
+
+maths_select_module_rmd <- function(common){
+  list(
+    maths_select_knit = !is.null(common$meta$maths_select$used),
+    maths_select_number_1 = common$maths_number_1,
+    maths_select_number_2 = common$maths_number_2
+  )
+}
+```
+
+### `inst/shiny/modules/maths_select.Rmd`
+
+````{verbatim}
+```{asis, echo = {{maths_select_knit}}, eval = {{maths_select_knit}}, include = {{maths_select_knit}}}
+### Select numbers
+```
+
+```{r, echo = {{maths_select_knit}}, include = {{maths_select_knit}}}
+number_1 <- {{maths_select_number_1}}
+number_2 <- {{maths_select_number_2}}
+
+div(
+  glue::glue("First number: {number_1}"),
+  br(),
+  glue::glue("Second number: {number_2}")
+)
+```
+````
+
+### `inst/shiny/modules/maths_select.yml`
+
+```{verbatim}
+component: "maths"
+short_name: "Select numbers"
+long_name: "Select numbers"
+authors: "Janion Nevill"
+package: []
+```
+
+### `inst/shiny/modules/maths_select.md`
+
+```{verbatim}
+### **Module:** ***Select Numbers***
+
+**BACKGROUND**
+
+Pick numbers for maths. It's not rocket surgery...
+```
+
+### `R/maths_select_f.R`
+
+This module does not have a function associated with it, as it is only used to select numbers.
+
+## "Plot" Module
+
+### `inst/shiny/modules/maths_plot_matrix.R`
+
+```{verbatim}
+maths_plot_matrix_module_ui <- function(id) {
+  ns <- shiny::NS(id)
+  div(
+    actionButton(ns("run"), "Generate Plot")
+  )
+}
+
+maths_plot_matrix_module_server <- function(id, common, parent_session) {
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns
+    
+    observeEvent(input$run, {
+      req(common$maths_number_1, common$maths_number_2)
+      
+      # WARNING ####
+      if (common$maths_number_1 > 20 || common$maths_number_2 > 20) {
+        common$logger |>
+          shinyscholar::writeLog("Text may not be readable on plot")
+      }
+      
+      # FUNCTION CALL ####
+
+      # LOAD INTO COMMON ####
+
+      # METADATA ####
+      common$meta$maths_plot_matrix$used <- TRUE
+
+      # TRIGGER
+      gargoyle::trigger("maths_plot_matrix")
+
+      show_results(parent_session)
+    })
+    
+    output$plot <- renderPlot({
+      gargoyle::watch("maths_plot_matrix")
+      req(common$maths_number_1, common$maths_number_2)
+      return(maths_plot_matrix(common$maths_number_1, common$maths_number_2))
+    })
+    
+    return(
+      list(
+        save = function() {
+          list(
+            ### Manual save start
+            ### Manual save end
+          )
+        },
+        load = function(state) {
+          ### Manual load start
+          ### Manual load end
+        }
+      )
+    )
+  })
+}
+
+maths_plot_matrix_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(outputId = ns("plot"))
+}
+
+maths_plot_matrix_module_rmd <- function(common){
+  list(
+    maths_plot_matrix_knit = !is.null(common$meta$maths_plot_matrix$used),
+    maths_select_number_1 = common$maths_number_1,
+    maths_select_number_2 = common$maths_number_2
+  )
+}
+```
+
+### `inst/shiny/modules/maths_plot_matrix.Rmd`
+
+````{verbatim}
+```{asis, echo = {{maths_plot_matrix_knit}}, eval = {{maths_plot_matrix_knit}}, include = {{maths_plot_matrix_knit}}}
+### Plot an *n x m* matrix of squares
+```
+
+```{r, echo = {{maths_plot_matrix_knit}}, include = {{maths_plot_matrix_knit}}}
+number_1 <- {{maths_select_number_1}}
+number_2 <- {{maths_select_number_2}}
+
+maths_plot_matrix(number_1, number_2)
+```
+````
+
+### `inst/shiny/modules/maths_plot_matrix.yml`
+
+```{verbatim}
+component: "maths"
+short_name: "Plot Matrix"
+long_name: "Plot an n x m matrix of squares"
+authors: "Janion Nevill"
+package: [ggplot2]
+```
+
+### `inst/shiny/modules/maths_plot_matrix.md`
+
+```{verbatim}
+### **Module:** ***Plot a Matrix of Squares***
+
+**BACKGROUND**
+
+Plots an *n x m* matrix of squares.
+```
+
+### `R/maths_plot_matrix_f.R`
+
+```{verbatim}
+#' Create an n*m grid of numbered squares on a plot.
+#'
+#' @param number_1 Number of squares per row
+#' @param number_2 Number of squares per column
+#'
+#' @return ggplot2 plot object
+#' @export
+maths_plot_matrix <- function(number_1, number_2) {
+  size <- 4
+  gap <- 1
+  period <- size + gap
+  
+  data <- data.frame(
+    xmin = period * rep(0:(number_1 - 1), number_2),
+    ymin = unlist(
+      lapply(
+        0:(number_2 - 1),
+        function(n) {
+          return(period * rep(n, number_1))
+        }
+      )
+    ),
+    number = 1:(number_1 * number_2)
+  )
+  
+  plot <- ggplot(data) +
+    theme_void() +
+    theme(
+      legend.position = "none"
+    ) +
+    coord_fixed() +
+    geom_rect(
+      aes(
+        xmin = xmin,
+        ymin = ymin,
+        xmax = xmin + size,
+        ymax = ymin + size
+      )
+    ) +
+    geom_text(
+      aes(
+        label = number,
+        x = xmin + size / 2,
+        y = ymin + size / 2,
+        vjust = "center",
+        hjust = "center",
+        color = "red"
+      ),
+      size = 50 / max(number_1, number_2)
+    )
+  
+  return(plot)
+}
+```
+
+## Other File Changes
+
+### `NAMESPACE`
+
+In the namespace file, the logic function(s) must be exported.
+
+```{verbatim}
+export(maths_plot_matrix)
+```
+
+### `inst/shiny/common.R`
+
+In the common class, the `maths_number_1` and `maths_number_2` objects to be stored are defined, and cleared in the `reset()` function. Unlike a list, this object will only accept assignments to defined fields.
+
+```{verbatim}
+common_class <- R6::R6Class(
+  classname = "common",
+  public = list(
+    maths_number_1 = NULL,
+    maths_number_2 = NULL,
+    ...
+    reset = function() {
+      self$maths_number_1 = NULL
+      self$maths_number_2 = NULL
+      ...
+```
+
+### `inst/shiny/global.R`
+
+In the global file, the "maths" component is defined in the components vector
+
+```{verbatim}
+COMPONENTS <- c("maths", "setup", "summary", "freq", "bayes", "rep")
+```
+
+and the "select" and "plot" modules are added to the base module configurations vector.
+
+```{verbatim}
+base_module_configs <- c(
+  "modules/maths_select.yml",
+  "modules/maths_plot_matrix.yml",
+  ...
+```
+
+### `inst/shiny/ui.R`
+
+In the UI, a tab is added to the navbar for the "maths" component
+
+```{verbatim}
+page_navbar(
+  ...
+  nav_panel("Maths", value = "maths"),
+  ...
+```
+
+and the "maths" modules are added to the sidebar.
+
+```{verbatim}
+layout_sidebar(
+  ...
+  insert_modules_ui("maths", "Maths"),
+  ...
+```
+
+# Pitfalls and Tips
+
+## Outputs are rendering before the "run" button is clicked
+
+Remember to use the object stored in `common$parameter` instead of the shiny `input$parameter`.
+
+## The reproducible output fails to render
+
+All parameters used in the output must be exported from the module that uses it, even if it were stored in another module.

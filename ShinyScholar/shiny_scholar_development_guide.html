@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -37,10 +71,83 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#modules-vs-components" id="toc-modules-vs-components" class="nav-link" data-scroll-target="#modules-vs-components"><span class="header-section-number">1.1</span> Modules vs Components</a>
+  <ul class="collapse">
+  <li><a href="#components" id="toc-components" class="nav-link" data-scroll-target="#components"><span class="header-section-number">1.1.1</span> Components</a></li>
+  <li><a href="#modules" id="toc-modules" class="nav-link" data-scroll-target="#modules"><span class="header-section-number">1.1.2</span> Modules</a></li>
+  </ul></li>
+  <li><a href="#running-the-app-after-making-changes" id="toc-running-the-app-after-making-changes" class="nav-link" data-scroll-target="#running-the-app-after-making-changes"><span class="header-section-number">1.2</span> Running the App After Making Changes</a></li>
+  </ul></li>
+  <li><a href="#creating-a-new-module" id="toc-creating-a-new-module" class="nav-link" data-scroll-target="#creating-a-new-module"><span class="header-section-number">2</span> Creating a New Module</a>
+  <ul class="collapse">
+  <li><a href="#module_identifier_f.r" id="toc-module_identifier_f.r" class="nav-link" data-scroll-target="#module_identifier_f.r"><span class="header-section-number">2.1</span> <code>&lt;MODULE_IDENTIFIER&gt;_f.R</code></a></li>
+  <li><a href="#module_identifier.md" id="toc-module_identifier.md" class="nav-link" data-scroll-target="#module_identifier.md"><span class="header-section-number">2.2</span> <code>&lt;MODULE_IDENTIFIER&gt;.md</code></a></li>
+  <li><a href="#module_identifier.r" id="toc-module_identifier.r" class="nav-link" data-scroll-target="#module_identifier.r"><span class="header-section-number">2.3</span> <code>&lt;MODULE_IDENTIFIER&gt;.R</code></a>
+  <ul class="collapse">
+  <li><a href="#module_identifier_module_ui" id="toc-module_identifier_module_ui" class="nav-link" data-scroll-target="#module_identifier_module_ui"><span class="header-section-number">2.3.1</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_ui()</code></a></li>
+  <li><a href="#module_identifier_module_server" id="toc-module_identifier_module_server" class="nav-link" data-scroll-target="#module_identifier_module_server"><span class="header-section-number">2.3.2</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_server()</code></a></li>
+  <li><a href="#module_identifier_module_result" id="toc-module_identifier_module_result" class="nav-link" data-scroll-target="#module_identifier_module_result"><span class="header-section-number">2.3.3</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_result()</code></a></li>
+  <li><a href="#module_identifier_module_rmd" id="toc-module_identifier_module_rmd" class="nav-link" data-scroll-target="#module_identifier_module_rmd"><span class="header-section-number">2.3.4</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_rmd()</code></a></li>
+  </ul></li>
+  <li><a href="#module_identifier.rmd" id="toc-module_identifier.rmd" class="nav-link" data-scroll-target="#module_identifier.rmd"><span class="header-section-number">2.4</span> <code>&lt;MODULE_IDENTIFIER&gt;.rmd</code></a></li>
+  <li><a href="#module_identifier.yml" id="toc-module_identifier.yml" class="nav-link" data-scroll-target="#module_identifier.yml"><span class="header-section-number">2.5</span> <code>&lt;MODULE_IDENTIFIER&gt;.yml</code></a></li>
+  <li><a href="#test-module_identifier.r" id="toc-test-module_identifier.r" class="nav-link" data-scroll-target="#test-module_identifier.r"><span class="header-section-number">2.6</span> <code>test-&lt;MODULE_IDENTIFIER&gt;.R</code></a></li>
+  <li><a href="#other-changes" id="toc-other-changes" class="nav-link" data-scroll-target="#other-changes"><span class="header-section-number">2.7</span> Other Changes</a>
+  <ul class="collapse">
+  <li><a href="#namespace" id="toc-namespace" class="nav-link" data-scroll-target="#namespace"><span class="header-section-number">2.7.1</span> <code>NAMESPACE</code></a></li>
+  <li><a href="#instshinyglobal.r" id="toc-instshinyglobal.r" class="nav-link" data-scroll-target="#instshinyglobal.r"><span class="header-section-number">2.7.2</span> <code>inst/shiny/global.R</code></a></li>
+  <li><a href="#instshinycommon.r" id="toc-instshinycommon.r" class="nav-link" data-scroll-target="#instshinycommon.r"><span class="header-section-number">2.7.3</span> <code>inst/shiny/common.R</code></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#creating-a-new-component" id="toc-creating-a-new-component" class="nav-link" data-scroll-target="#creating-a-new-component"><span class="header-section-number">3</span> Creating a New Component</a>
+  <ul class="collapse">
+  <li><a href="#instshinyglobal.r-1" id="toc-instshinyglobal.r-1" class="nav-link" data-scroll-target="#instshinyglobal.r-1"><span class="header-section-number">3.1</span> <code>inst/shiny/global.R</code></a></li>
+  <li><a href="#instshinyui.r" id="toc-instshinyui.r" class="nav-link" data-scroll-target="#instshinyui.r"><span class="header-section-number">3.2</span> <code>inst/shiny/ui.R</code></a></li>
+  </ul></li>
+  <li><a href="#example---new-component-with-2-new-modules" id="toc-example---new-component-with-2-new-modules" class="nav-link" data-scroll-target="#example---new-component-with-2-new-modules"><span class="header-section-number">4</span> Example - New Component with 2 New Modules</a>
+  <ul class="collapse">
+  <li><a href="#select-module" id="toc-select-module" class="nav-link" data-scroll-target="#select-module"><span class="header-section-number">4.1</span> “Select” Module</a>
+  <ul class="collapse">
+  <li><a href="#instshinymodulesmaths_select.r" id="toc-instshinymodulesmaths_select.r" class="nav-link" data-scroll-target="#instshinymodulesmaths_select.r"><span class="header-section-number">4.1.1</span> <code>inst/shiny/modules/maths_select.R</code></a></li>
+  <li><a href="#instshinymodulesmaths_select.rmd" id="toc-instshinymodulesmaths_select.rmd" class="nav-link" data-scroll-target="#instshinymodulesmaths_select.rmd"><span class="header-section-number">4.1.2</span> <code>inst/shiny/modules/maths_select.Rmd</code></a></li>
+  <li><a href="#instshinymodulesmaths_select.yml" id="toc-instshinymodulesmaths_select.yml" class="nav-link" data-scroll-target="#instshinymodulesmaths_select.yml"><span class="header-section-number">4.1.3</span> <code>inst/shiny/modules/maths_select.yml</code></a></li>
+  <li><a href="#instshinymodulesmaths_select.md" id="toc-instshinymodulesmaths_select.md" class="nav-link" data-scroll-target="#instshinymodulesmaths_select.md"><span class="header-section-number">4.1.4</span> <code>inst/shiny/modules/maths_select.md</code></a></li>
+  <li><a href="#rmaths_select_f.r" id="toc-rmaths_select_f.r" class="nav-link" data-scroll-target="#rmaths_select_f.r"><span class="header-section-number">4.1.5</span> <code>R/maths_select_f.R</code></a></li>
+  </ul></li>
+  <li><a href="#plot-module" id="toc-plot-module" class="nav-link" data-scroll-target="#plot-module"><span class="header-section-number">4.2</span> “Plot” Module</a>
+  <ul class="collapse">
+  <li><a href="#instshinymodulesmaths_plot_matrix.r" id="toc-instshinymodulesmaths_plot_matrix.r" class="nav-link" data-scroll-target="#instshinymodulesmaths_plot_matrix.r"><span class="header-section-number">4.2.1</span> <code>inst/shiny/modules/maths_plot_matrix.R</code></a></li>
+  <li><a href="#instshinymodulesmaths_plot_matrix.rmd" id="toc-instshinymodulesmaths_plot_matrix.rmd" class="nav-link" data-scroll-target="#instshinymodulesmaths_plot_matrix.rmd"><span class="header-section-number">4.2.2</span> <code>inst/shiny/modules/maths_plot_matrix.Rmd</code></a></li>
+  <li><a href="#instshinymodulesmaths_plot_matrix.yml" id="toc-instshinymodulesmaths_plot_matrix.yml" class="nav-link" data-scroll-target="#instshinymodulesmaths_plot_matrix.yml"><span class="header-section-number">4.2.3</span> <code>inst/shiny/modules/maths_plot_matrix.yml</code></a></li>
+  <li><a href="#instshinymodulesmaths_plot_matrix.md" id="toc-instshinymodulesmaths_plot_matrix.md" class="nav-link" data-scroll-target="#instshinymodulesmaths_plot_matrix.md"><span class="header-section-number">4.2.4</span> <code>inst/shiny/modules/maths_plot_matrix.md</code></a></li>
+  <li><a href="#rmaths_plot_matrix_f.r" id="toc-rmaths_plot_matrix_f.r" class="nav-link" data-scroll-target="#rmaths_plot_matrix_f.r"><span class="header-section-number">4.2.5</span> <code>R/maths_plot_matrix_f.R</code></a></li>
+  </ul></li>
+  <li><a href="#other-file-changes" id="toc-other-file-changes" class="nav-link" data-scroll-target="#other-file-changes"><span class="header-section-number">4.3</span> Other File Changes</a>
+  <ul class="collapse">
+  <li><a href="#namespace-1" id="toc-namespace-1" class="nav-link" data-scroll-target="#namespace-1"><span class="header-section-number">4.3.1</span> <code>NAMESPACE</code></a></li>
+  <li><a href="#instshinycommon.r-1" id="toc-instshinycommon.r-1" class="nav-link" data-scroll-target="#instshinycommon.r-1"><span class="header-section-number">4.3.2</span> <code>inst/shiny/common.R</code></a></li>
+  <li><a href="#instshinyglobal.r-2" id="toc-instshinyglobal.r-2" class="nav-link" data-scroll-target="#instshinyglobal.r-2"><span class="header-section-number">4.3.3</span> <code>inst/shiny/global.R</code></a></li>
+  <li><a href="#instshinyui.r-1" id="toc-instshinyui.r-1" class="nav-link" data-scroll-target="#instshinyui.r-1"><span class="header-section-number">4.3.4</span> <code>inst/shiny/ui.R</code></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#pitfalls-and-tips" id="toc-pitfalls-and-tips" class="nav-link" data-scroll-target="#pitfalls-and-tips"><span class="header-section-number">5</span> Pitfalls and Tips</a>
+  <ul class="collapse">
+  <li><a href="#outputs-are-rendering-before-the-run-button-is-clicked" id="toc-outputs-are-rendering-before-the-run-button-is-clicked" class="nav-link" data-scroll-target="#outputs-are-rendering-before-the-run-button-is-clicked"><span class="header-section-number">5.1</span> Outputs are rendering before the “run” button is clicked</a></li>
+  <li><a href="#the-reproducible-output-fails-to-render" id="toc-the-reproducible-output-fails-to-render" class="nav-link" data-scroll-target="#the-reproducible-output-fails-to-render"><span class="header-section-number">5.2</span> The reproducible output fails to render</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -62,11 +169,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>This document has been written to serve as a practical guide on how to develop new modules and components in a <em>{shinyscholar}</em> app. It covers the process of creating a new module in an existing component, or in a new component.</p>
-<section id="modules-vs-components" class="level2">
-<h2 class="anchored" data-anchor-id="modules-vs-components">Modules vs Components</h2>
+<section id="modules-vs-components" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="modules-vs-components"><span class="header-section-number">1.1</span> Modules vs Components</h2>
 <div id="fig-metainsight-setup" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-metainsight-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -77,8 +184,8 @@ Figure&nbsp;1: A screenshot of MetaInsight on the “Setup” component
 </figcaption>
 </figure>
 </div>
-<section id="components" class="level3">
-<h3 class="anchored" data-anchor-id="components">Components</h3>
+<section id="components" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="components"><span class="header-section-number">1.1.1</span> Components</h3>
 <p>A component is a set of operations and results which can be logically grouped together. The individual operations and results can be quite varied, but they come together to work towards a common purpose. In <a href="#fig-metainsight-setup" class="quarto-xref">Figure&nbsp;1</a> we see the “Setup” component, which contains operations related to preparing data and options for analysis. The full list of components in this app contains:</p>
 <ul>
 <li>Intro
@@ -107,8 +214,8 @@ Figure&nbsp;1: A screenshot of MetaInsight on the “Setup” component
 </ul></li>
 </ul>
 </section>
-<section id="modules" class="level3">
-<h3 class="anchored" data-anchor-id="modules">Modules</h3>
+<section id="modules" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="modules"><span class="header-section-number">1.1.2</span> Modules</h3>
 <p>A module is an individual operation, and its outputs, within a component. This can be something simple such as selecting options, or it could be more involved, such as running an analysis and outputting some key findings. In <a href="#fig-metainsight-setup" class="quarto-xref">Figure&nbsp;1</a> we see the modules in the “Setup” component:</p>
 <ul>
 <li>Load data</li>
@@ -119,9 +226,16 @@ Figure&nbsp;1: A screenshot of MetaInsight on the “Setup” component
 <p>Each module has a well-defined function, but they are used together to setup the data and analysis options. Modules may use inputs from other modules and components via a “common” object.</p>
 </section>
 </section>
+<section id="running-the-app-after-making-changes" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="running-the-app-after-making-changes"><span class="header-section-number">1.2</span> Running the App After Making Changes</h2>
+<p>To run the app after making code changes, the following 3 commands should be run.</p>
+<pre><code>detach("package:metainsight", unload = TRUE)
+devtools::install_local(path = getwd(), force = TRUE)
+metainsight::run_metainsight()</code></pre>
 </section>
-<section id="creating-a-new-module" class="level1">
-<h1>Creating a New Module</h1>
+</section>
+<section id="creating-a-new-module" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Creating a New Module</h1>
 <p><em>{shinyscholar}</em> provides a helper function to create the skeleton of a new module. The following shows the typical parameters used in the function, where <code>&lt;MODULE_IDENTIFIER&gt;</code> is typically of the form <code>&lt;COMPONENT_NAME&gt;_&lt;MODULE_NAME&gt;</code> eg. <code>bayesian_forest</code> for the forest plot module in the bayesian analysis component.</p>
 <pre><code>shinyscholar::create_module(id = "&lt;MODULE_IDENTIFIER&gt;", dir = getwd(), result = TRUE, rmd = TRUE, save = TRUE)</code></pre>
 <p>This will create the required files, with the required structures, in the correct locations:</p>
@@ -174,13 +288,13 @@ Figure&nbsp;1: A screenshot of MetaInsight on the “Setup” component
 </ul></li>
 </ul>
 <p>Those files will not function in the skeleton state, but most of the “boilerplate” code will have been created. They will need to be populated with the required functionality and parameters for the module.</p>
-<section id="module_identifier_f.r" class="level2">
-<h2 class="anchored" data-anchor-id="module_identifier_f.r"><code>&lt;MODULE_IDENTIFIER&gt;_f.R</code></h2>
+<section id="module_identifier_f.r" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="module_identifier_f.r"><span class="header-section-number">2.1</span> <code>&lt;MODULE_IDENTIFIER&gt;_f.R</code></h2>
 <p>Found in the <code>R</code> directory.</p>
 <p>This contains all functions for creating the outputs for the module. This can be spread across multiple functions, and those functions do not all need to be tagged with <code>@export</code>, only those which are called by the module directly. If a module displays multiple plots, for example, there can be multiple exported functions.</p>
 </section>
-<section id="module_identifier.md" class="level2">
-<h2 class="anchored" data-anchor-id="module_identifier.md"><code>&lt;MODULE_IDENTIFIER&gt;.md</code></h2>
+<section id="module_identifier.md" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="module_identifier.md"><span class="header-section-number">2.2</span> <code>&lt;MODULE_IDENTIFIER&gt;.md</code></h2>
 <p>Found in the <code>inst/shiny/modules</code> directory.</p>
 <p>Informs the user about the functionality of the module. Typically the title will be of the format <code>**module: &lt;MODULE_NAME&gt;**</code>, and it will contain sections:</p>
 <ul>
@@ -198,20 +312,20 @@ Figure&nbsp;1: A screenshot of MetaInsight on the “Setup” component
 </ul></li>
 </ul>
 </section>
-<section id="module_identifier.r" class="level2">
-<h2 class="anchored" data-anchor-id="module_identifier.r"><code>&lt;MODULE_IDENTIFIER&gt;.R</code></h2>
+<section id="module_identifier.r" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="module_identifier.r"><span class="header-section-number">2.3</span> <code>&lt;MODULE_IDENTIFIER&gt;.R</code></h2>
 <p>Found in the <code>inst/shiny/modules</code> directory.</p>
 <p>Contains the code for running the module within the app.</p>
-<section id="module_identifier_module_ui" class="level3">
-<h3 class="anchored" data-anchor-id="module_identifier_module_ui"><code>&lt;MODULE_IDENTIFIER&gt;_module_ui()</code></h3>
+<section id="module_identifier_module_ui" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="module_identifier_module_ui"><span class="header-section-number">2.3.1</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_ui()</code></h3>
 <p>Creates the inputs for the module, which will be displayed in the left-hand side bar of the app. By default this includes only a “Run” button. Any parameters which will affect the outputs should be represented by an input here. If the module is supposed to run automatically, then the run button can be removed. This should not contain any outputs.</p>
 <p>All inputs must be namespaced using <code>ns()</code>.</p>
 </section>
-<section id="module_identifier_module_server" class="level3">
-<h3 class="anchored" data-anchor-id="module_identifier_module_server"><code>&lt;MODULE_IDENTIFIER&gt;_module_server()</code></h3>
+<section id="module_identifier_module_server" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="module_identifier_module_server"><span class="header-section-number">2.3.2</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_server()</code></h3>
 <p>Contains the server code which will respond to the inputs and populate the outputs.</p>
-<section id="observeevent-or-observe" class="level4">
-<h4 class="anchored" data-anchor-id="observeevent-or-observe"><code>observeEvent()</code> or <code>observe()</code></h4>
+<section id="observeevent-or-observe" class="level4" data-number="2.3.2.1">
+<h4 data-number="2.3.2.1" class="anchored" data-anchor-id="observeevent-or-observe"><span class="header-section-number">2.3.2.1</span> <code>observeEvent()</code> or <code>observe()</code></h4>
 <p>By default an <code>observeEvent()</code> block will be created to run when the “Run” button is pressed. If the module is intended to run automatically, this should be changed to an <code>observe()</code> block. It has the following sections:</p>
 <ul>
 <li><code># WARNING ####</code>
@@ -237,36 +351,36 @@ Figure&nbsp;1: A screenshot of MetaInsight on the “Setup” component
 </ul></li>
 </ul>
 </section>
-<section id="render-outputs" class="level4">
-<h4 class="anchored" data-anchor-id="render-outputs">Render Outputs</h4>
+<section id="render-outputs" class="level4" data-number="2.3.2.2">
+<h4 data-number="2.3.2.2" class="anchored" data-anchor-id="render-outputs"><span class="header-section-number">2.3.2.2</span> Render Outputs</h4>
 <p>Add any <code>Render_()</code> calls to render to the outputs of the module, as would be done in a normal shiny app. The values should be taken from <code>common</code>, rather than directly from the inputs, and the render statement should begin with a call to <code>gargoyle::watch("&lt;MODULE_IDENTIFIER&gt;")</code>, and a call to <code>req()</code> for any objects which are required from other modules.</p>
 </section>
-<section id="return-statement" class="level4">
-<h4 class="anchored" data-anchor-id="return-statement">Return Statement</h4>
+<section id="return-statement" class="level4" data-number="2.3.2.3">
+<h4 data-number="2.3.2.3" class="anchored" data-anchor-id="return-statement"><span class="header-section-number">2.3.2.3</span> Return Statement</h4>
 <p>Provide functions to save and load input parameters and outputs that should be saved when the session is saved.</p>
-<section id="save" class="level5">
-<h5 class="anchored" data-anchor-id="save">Save</h5>
+<section id="save" class="level5" data-number="2.3.2.3.1">
+<h5 data-number="2.3.2.3.1" class="anchored" data-anchor-id="save"><span class="header-section-number">2.3.2.3.1</span> Save</h5>
 <p>The return from the save function should be of the format:</p>
 <pre><code>list(
   parameter_1 = input$parameter_1,
   parameter_2 = input$parameter_2
 )</code></pre>
 </section>
-<section id="load" class="level5">
-<h5 class="anchored" data-anchor-id="load">Load</h5>
+<section id="load" class="level5" data-number="2.3.2.3.2">
+<h5 data-number="2.3.2.3.2" class="anchored" data-anchor-id="load"><span class="header-section-number">2.3.2.3.2</span> Load</h5>
 <p>The contents of the save function should be of the format:</p>
 <pre><code>update*(session, "parameter_1", value = state$parameter_1)
 update*(session, "parameter_2", value = state$parameter_2)</code></pre>
 </section>
 </section>
 </section>
-<section id="module_identifier_module_result" class="level3">
-<h3 class="anchored" data-anchor-id="module_identifier_module_result"><code>&lt;MODULE_IDENTIFIER&gt;_module_result()</code></h3>
+<section id="module_identifier_module_result" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="module_identifier_module_result"><span class="header-section-number">2.3.3</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_result()</code></h3>
 <p>Creates the outputs for the module, which will be displayed in the main panel of the app. By default this includes only a verbatim text output. This should not contain any inputs.</p>
 <p>All outputs must be namespaced using <code>ns()</code>.</p>
 </section>
-<section id="module_identifier_module_rmd" class="level3">
-<h3 class="anchored" data-anchor-id="module_identifier_module_rmd"><code>&lt;MODULE_IDENTIFIER&gt;_module_rmd()</code></h3>
+<section id="module_identifier_module_rmd" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="module_identifier_module_rmd"><span class="header-section-number">2.3.4</span> <code>&lt;MODULE_IDENTIFIER&gt;_module_rmd()</code></h3>
 <p>Store the parameters to be passed to the R-markdown file when creating the reproducible output. The values are taken from <code>common</code> and put into a list in the following format:</p>
 <pre><code>list(
   &lt;MODULE_IDENTIFIER&gt;_knit = !is.null(common$meta$&lt;MODULE_IDENTIFIER&gt;$used),
@@ -277,14 +391,14 @@ update*(session, "parameter_2", value = state$parameter_2)</code></pre>
 <p>Note that even if a parameter is exported by another module, it still needs to be exported by every module that needs to use it in the R-markdown output. If a parameter is not exported by the module that will use it, then the parameter will not be accessible in the module’s scope.</p>
 </section>
 </section>
-<section id="module_identifier.rmd" class="level2">
-<h2 class="anchored" data-anchor-id="module_identifier.rmd"><code>&lt;MODULE_IDENTIFIER&gt;.rmd</code></h2>
+<section id="module_identifier.rmd" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="module_identifier.rmd"><span class="header-section-number">2.4</span> <code>&lt;MODULE_IDENTIFIER&gt;.rmd</code></h2>
 <p>Found in the <code>inst/shiny/modules</code> directory.</p>
 <p>This file contains the reproducible R-markdown content for the module. It uses the parameters exported by the <code>&lt;MODULE_IDENTIFIER&gt;_module_rmd()</code> function in the <code>&lt;MODULE_IDENTIFIER&gt;.R</code> file. It is broken into 2 sections by default, but it can contain as many sections as is needed. The first section should contain a title and any preamble describing what the module does and any relevant details about the output. The second section contains the output, which should be the same as what is output in the UI by the module.</p>
 <p>Variables from the module can be accessed by referencing them surrounded by 2 pairs of curly braces eg. <code>{parameter}</code>.</p>
 </section>
-<section id="module_identifier.yml" class="level2">
-<h2 class="anchored" data-anchor-id="module_identifier.yml"><code>&lt;MODULE_IDENTIFIER&gt;.yml</code></h2>
+<section id="module_identifier.yml" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="module_identifier.yml"><span class="header-section-number">2.5</span> <code>&lt;MODULE_IDENTIFIER&gt;.yml</code></h2>
 <p>Found in the <code>inst/shiny/modules</code> directory.</p>
 <p>This <em>YAML</em> file defines the basic information about the module:</p>
 <ul>
@@ -310,39 +424,387 @@ update*(session, "parameter_2", value = state$parameter_2)</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="test-module_identifier.r" class="level2">
-<h2 class="anchored" data-anchor-id="test-module_identifier.r"><code>test-&lt;MODULE_IDENTIFIER&gt;.R</code></h2>
+<section id="test-module_identifier.r" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="test-module_identifier.r"><span class="header-section-number">2.6</span> <code>test-&lt;MODULE_IDENTIFIER&gt;.R</code></h2>
 <p>Found in the <code>tests/testthat</code> directory.</p>
 <p>This file contains all of the unit tests for the function(s) in <code>R/&lt;MODULE_IDENTIFIER&gt;_f.R</code>, as well as any end-to-end tests of the module code found in <code>inst/shiny/modules/&lt;MODULE_IDENTIFIER&gt;.R</code>.</p>
 </section>
-<section id="other-changes" class="level2">
-<h2 class="anchored" data-anchor-id="other-changes">Other Changes</h2>
+<section id="other-changes" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="other-changes"><span class="header-section-number">2.7</span> Other Changes</h2>
 <p>There are a handful of other changes which must be made to existing files in order to add a new module to the app. Once these are made, the module should be complete and ready to run.</p>
-<section id="namespace" class="level3">
-<h3 class="anchored" data-anchor-id="namespace"><code>NAMESPACE</code></h3>
+<section id="namespace" class="level3" data-number="2.7.1">
+<h3 data-number="2.7.1" class="anchored" data-anchor-id="namespace"><span class="header-section-number">2.7.1</span> <code>NAMESPACE</code></h3>
 <p>A new <code>export()</code> line must be added for the function found(s) in <code>R/&lt;MODULE_IDENTIFIER_f.R</code>. By convention these are added in alphabetical order.</p>
 </section>
-<section id="instshinyglobal.r" class="level3">
-<h3 class="anchored" data-anchor-id="instshinyglobal.r"><code>inst/shiny/global.R</code></h3>
+<section id="instshinyglobal.r" class="level3" data-number="2.7.2">
+<h3 data-number="2.7.2" class="anchored" data-anchor-id="instshinyglobal.r"><span class="header-section-number">2.7.2</span> <code>inst/shiny/global.R</code></h3>
 <p>In the vector named <code>base_module_configs</code>, the file path to the module’s <em>YAML</em> file must be added. these are added in the order in which they will appear within the component.</p>
 </section>
-<section id="instshinycommon.r" class="level3">
-<h3 class="anchored" data-anchor-id="instshinycommon.r"><code>inst/shiny/common.R</code></h3>
+<section id="instshinycommon.r" class="level3" data-number="2.7.3">
+<h3 data-number="2.7.3" class="anchored" data-anchor-id="instshinycommon.r"><span class="header-section-number">2.7.3</span> <code>inst/shiny/common.R</code></h3>
 <p>The <code>common_class</code> object holds all of the objects which are stored within each module in the app. Any parameter which is to be stored in a module must be added to the list of public fields in this object, and should be cleared in the <code>reset()</code> function.</p>
 </section>
 </section>
 </section>
-<section id="creating-a-new-component" class="level1">
-<h1>Creating a New Component</h1>
+<section id="creating-a-new-component" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Creating a New Component</h1>
 <p>A component cannot exist without modules within it, so everything in the previous section will need to be done for the new modules, as well as a few extra steps to create the component itself. Ensure that the newly created modules define the newly created component name in the <em>YAML</em> file.</p>
-<section id="instshinyglobal.r-1" class="level2">
-<h2 class="anchored" data-anchor-id="instshinyglobal.r-1"><code>inst/shiny/global.R</code></h2>
+<section id="instshinyglobal.r-1" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="instshinyglobal.r-1"><span class="header-section-number">3.1</span> <code>inst/shiny/global.R</code></h2>
 <p>The name of the module must be added to the <code>COMPONENTS</code> vector. These are added in the order that they will appear in the app.</p>
 </section>
-<section id="instshinyui.r" class="level2">
-<h2 class="anchored" data-anchor-id="instshinyui.r"><code>inst/shiny/ui.R</code></h2>
+<section id="instshinyui.r" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="instshinyui.r"><span class="header-section-number">3.2</span> <code>inst/shiny/ui.R</code></h2>
 <p>In the <code>page_navbar</code>, a new <code>nav_panel</code> must be added for the new component. These are added in the order that they will appear in the app.</p>
 <p>In the <code>layout_sidebar</code>, a new call to <code>insert_modules_ui()</code> must be added, also in the order that the components will appear in the app.</p>
+</section>
+</section>
+<section id="example---new-component-with-2-new-modules" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Example - New Component with 2 New Modules</h1>
+<p>This example contains a new “Maths” component, with 2 new modules: “Select” and “Plot”. The “Select” module simply allows the user to select 2 numbers which are displayed and stored into <code>common</code>. The “Plot” module plots a 2 dimensional array of squares where the dimensions are the 2 numbers chosen in the “Select” module.</p>
+<section id="select-module" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="select-module"><span class="header-section-number">4.1</span> “Select” Module</h2>
+<section id="instshinymodulesmaths_select.r" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="instshinymodulesmaths_select.r"><span class="header-section-number">4.1.1</span> <code>inst/shiny/modules/maths_select.R</code></h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>maths_select_module_ui &lt;- function(id) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  ns &lt;- shiny::NS(id)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  div(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    h3("Select numbers"),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    numericInput(inputId = ns("number_1"), label = "First Number", value = 1, min = 1, max = 999999, step = 1),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    numericInput(inputId = ns("number_2"), label = "Second Number", value = 1, min = 1, max = 999999, step = 1),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    actionButton(ns("run"), "Select Numbers")</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>maths_select_module_server &lt;- function(id, common, parent_session) {</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  moduleServer(id, function(input, output, session) {</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ns &lt;- session$ns</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    observeEvent(input$run, {</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      # WARNING ####</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      if (input$number_1 &gt; 999999) {</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        common$logger |&gt;</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>          shinyscholar::writeLog(glue::glue("First number selected ({input$number_1}) is greater than 999999"))</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      if (input$number_2 &gt; 999999) {</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        common$logger |&gt;</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>          shinyscholar::writeLog(glue::glue("Second number selected ({input$number_2}) is greater than 999999"))</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>      # FUNCTION CALL ####</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>      # LOAD INTO COMMON ####</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>      common$maths_number_1 &lt;- input$number_1</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>      common$maths_number_2 &lt;- input$number_2</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>      # METADATA ####</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>      common$meta$maths_select$used &lt;- TRUE</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>      # TRIGGER</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>      gargoyle::trigger("maths_select")</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>      show_results(parent_session)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    output$number_text_1 &lt;- renderText({</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>      gargoyle::watch("maths_select")</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>      glue::glue("First number: {common$maths_number_1}")</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    output$number_text_2 &lt;- renderText({</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>      gargoyle::watch("maths_select")</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>      glue::glue("Second number: {common$maths_number_2}")</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    return(</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>      list(</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        save = function() {</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>          list(</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>            ### Manual save start</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>            ### Manual save end</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>            number_1 = input$number_1,</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>            number_2 = input$number_2</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        load = function(state) {</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>          ### Manual load start</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>          ### Manual load end</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>          updateNumericInput(session, "number_1", value = state$number_1)</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>          updateNumericInput(session, "number_2", value = state$number_2)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>maths_select_module_result &lt;- function(id) {</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>  ns &lt;- NS(id)</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  div(</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>    textOutput(outputId = ns("number_text_1")),</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>    textOutput(outputId = ns("number_text_2"))</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>maths_select_module_rmd &lt;- function(common){</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>  list(</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>    maths_select_knit = !is.null(common$meta$maths_select$used),</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>    maths_select_number_1 = common$maths_number_1,</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>    maths_select_number_2 = common$maths_number_2</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinymodulesmaths_select.rmd" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="instshinymodulesmaths_select.rmd"><span class="header-section-number">4.1.2</span> <code>inst/shiny/modules/maths_select.Rmd</code></h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>```{asis, echo = {{maths_select_knit}}, eval = {{maths_select_knit}}, include = {{maths_select_knit}}}</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>### Select numbers</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>```{r, echo = {{maths_select_knit}}, include = {{maths_select_knit}}}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>number_1 &lt;- {{maths_select_number_1}}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>number_2 &lt;- {{maths_select_number_2}}</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>div(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  glue::glue("First number: {number_1}"),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  br(),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  glue::glue("Second number: {number_2}")</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinymodulesmaths_select.yml" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="instshinymodulesmaths_select.yml"><span class="header-section-number">4.1.3</span> <code>inst/shiny/modules/maths_select.yml</code></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>component: "maths"</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>short_name: "Select numbers"</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>long_name: "Select numbers"</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>authors: "Janion Nevill"</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>package: []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinymodulesmaths_select.md" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="instshinymodulesmaths_select.md"><span class="header-section-number">4.1.4</span> <code>inst/shiny/modules/maths_select.md</code></h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>### **Module:** ***Select Numbers***</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>**BACKGROUND**</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Pick numbers for maths. It's not rocket surgery...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="rmaths_select_f.r" class="level3" data-number="4.1.5">
+<h3 data-number="4.1.5" class="anchored" data-anchor-id="rmaths_select_f.r"><span class="header-section-number">4.1.5</span> <code>R/maths_select_f.R</code></h3>
+<p>This module does not have a function associated with it, as it is only used to select numbers.</p>
+</section>
+</section>
+<section id="plot-module" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="plot-module"><span class="header-section-number">4.2</span> “Plot” Module</h2>
+<section id="instshinymodulesmaths_plot_matrix.r" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="instshinymodulesmaths_plot_matrix.r"><span class="header-section-number">4.2.1</span> <code>inst/shiny/modules/maths_plot_matrix.R</code></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>maths_plot_matrix_module_ui &lt;- function(id) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  ns &lt;- shiny::NS(id)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  div(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    actionButton(ns("run"), "Generate Plot")</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>maths_plot_matrix_module_server &lt;- function(id, common, parent_session) {</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  moduleServer(id, function(input, output, session) {</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    ns &lt;- session$ns</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    observeEvent(input$run, {</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      req(common$maths_number_1, common$maths_number_2)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      # WARNING ####</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      if (common$maths_number_1 &gt; 20 || common$maths_number_2 &gt; 20) {</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        common$logger |&gt;</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>          shinyscholar::writeLog("Text may not be readable on plot")</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      # FUNCTION CALL ####</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      # LOAD INTO COMMON ####</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>      # METADATA ####</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      common$meta$maths_plot_matrix$used &lt;- TRUE</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>      # TRIGGER</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>      gargoyle::trigger("maths_plot_matrix")</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>      show_results(parent_session)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    output$plot &lt;- renderPlot({</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>      gargoyle::watch("maths_plot_matrix")</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>      req(common$maths_number_1, common$maths_number_2)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>      return(maths_plot_matrix(common$maths_number_1, common$maths_number_2))</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    return(</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>      list(</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>        save = function() {</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>          list(</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>            ### Manual save start</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>            ### Manual save end</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>        load = function(state) {</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>          ### Manual load start</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>          ### Manual load end</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>maths_plot_matrix_module_result &lt;- function(id) {</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>  ns &lt;- NS(id)</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>  plotOutput(outputId = ns("plot"))</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>maths_plot_matrix_module_rmd &lt;- function(common){</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>  list(</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    maths_plot_matrix_knit = !is.null(common$meta$maths_plot_matrix$used),</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    maths_select_number_1 = common$maths_number_1,</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    maths_select_number_2 = common$maths_number_2</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinymodulesmaths_plot_matrix.rmd" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="instshinymodulesmaths_plot_matrix.rmd"><span class="header-section-number">4.2.2</span> <code>inst/shiny/modules/maths_plot_matrix.Rmd</code></h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>```{asis, echo = {{maths_plot_matrix_knit}}, eval = {{maths_plot_matrix_knit}}, include = {{maths_plot_matrix_knit}}}</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>### Plot an *n x m* matrix of squares</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>```{r, echo = {{maths_plot_matrix_knit}}, include = {{maths_plot_matrix_knit}}}</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>number_1 &lt;- {{maths_select_number_1}}</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>number_2 &lt;- {{maths_select_number_2}}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>maths_plot_matrix(number_1, number_2)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinymodulesmaths_plot_matrix.yml" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="instshinymodulesmaths_plot_matrix.yml"><span class="header-section-number">4.2.3</span> <code>inst/shiny/modules/maths_plot_matrix.yml</code></h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>component: "maths"</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>short_name: "Plot Matrix"</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>long_name: "Plot an n x m matrix of squares"</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>authors: "Janion Nevill"</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>package: [ggplot2]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinymodulesmaths_plot_matrix.md" class="level3" data-number="4.2.4">
+<h3 data-number="4.2.4" class="anchored" data-anchor-id="instshinymodulesmaths_plot_matrix.md"><span class="header-section-number">4.2.4</span> <code>inst/shiny/modules/maths_plot_matrix.md</code></h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>### **Module:** ***Plot a Matrix of Squares***</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>**BACKGROUND**</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>Plots an *n x m* matrix of squares.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="rmaths_plot_matrix_f.r" class="level3" data-number="4.2.5">
+<h3 data-number="4.2.5" class="anchored" data-anchor-id="rmaths_plot_matrix_f.r"><span class="header-section-number">4.2.5</span> <code>R/maths_plot_matrix_f.R</code></h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>#' Create an n*m grid of numbered squares on a plot.</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>#'</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>#' @param number_1 Number of squares per row</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>#' @param number_2 Number of squares per column</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>#'</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>#' @return ggplot2 plot object</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>#' @export</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>maths_plot_matrix &lt;- function(number_1, number_2) {</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  size &lt;- 4</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  gap &lt;- 1</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  period &lt;- size + gap</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  data &lt;- data.frame(</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    xmin = period * rep(0:(number_1 - 1), number_2),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    ymin = unlist(</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>      lapply(</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        0:(number_2 - 1),</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>        function(n) {</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>          return(period * rep(n, number_1))</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    number = 1:(number_1 * number_2)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  plot &lt;- ggplot(data) +</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    theme_void() +</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    theme(</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>      legend.position = "none"</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    ) +</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    coord_fixed() +</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    geom_rect(</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>      aes(</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>        xmin = xmin,</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>        ymin = ymin,</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>        xmax = xmin + size,</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>        ymax = ymin + size</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    ) +</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>    geom_text(</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>      aes(</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>        label = number,</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>        x = xmin + size / 2,</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>        y = ymin + size / 2,</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>        vjust = "center",</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>        hjust = "center",</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>        color = "red"</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>      size = 50 / max(number_1, number_2)</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>  return(plot)</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="other-file-changes" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="other-file-changes"><span class="header-section-number">4.3</span> Other File Changes</h2>
+<section id="namespace-1" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="namespace-1"><span class="header-section-number">4.3.1</span> <code>NAMESPACE</code></h3>
+<p>In the namespace file, the logic function(s) must be exported.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>export(maths_plot_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinycommon.r-1" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="instshinycommon.r-1"><span class="header-section-number">4.3.2</span> <code>inst/shiny/common.R</code></h3>
+<p>In the common class, the <code>maths_number_1</code> and <code>maths_number_2</code> objects to be stored are defined, and cleared in the <code>reset()</code> function. Unlike a list, this object will only accept assignments to defined fields.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>common_class &lt;- R6::R6Class(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  classname = "common",</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  public = list(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    maths_number_1 = NULL,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    maths_number_2 = NULL,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    reset = function() {</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>      self$maths_number_1 = NULL</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>      self$maths_number_2 = NULL</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinyglobal.r-2" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="instshinyglobal.r-2"><span class="header-section-number">4.3.3</span> <code>inst/shiny/global.R</code></h3>
+<p>In the global file, the “maths” component is defined in the components vector</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>COMPONENTS &lt;- c("maths", "setup", "summary", "freq", "bayes", "rep")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and the “select” and “plot” modules are added to the base module configurations vector.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>base_module_configs &lt;- c(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  "modules/maths_select.yml",</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  "modules/maths_plot_matrix.yml",</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="instshinyui.r-1" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="instshinyui.r-1"><span class="header-section-number">4.3.4</span> <code>inst/shiny/ui.R</code></h3>
+<p>In the UI, a tab is added to the navbar for the “maths” component</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>page_navbar(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  nav_panel("Maths", value = "maths"),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and the “maths” modules are added to the sidebar.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>layout_sidebar(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  insert_modules_ui("maths", "Maths"),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="pitfalls-and-tips" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Pitfalls and Tips</h1>
+<section id="outputs-are-rendering-before-the-run-button-is-clicked" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="outputs-are-rendering-before-the-run-button-is-clicked"><span class="header-section-number">5.1</span> Outputs are rendering before the “run” button is clicked</h2>
+<p>Remember to use the object stored in <code>common$parameter</code> instead of the shiny <code>input$parameter</code>.</p>
+</section>
+<section id="the-reproducible-output-fails-to-render" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="the-reproducible-output-fails-to-render"><span class="header-section-number">5.2</span> The reproducible output fails to render</h2>
+<p>All parameters used in the output must be exported from the module that uses it, even if it were stored in another module.</p>
 </section>
 </section>
 
