@@ -49,7 +49,7 @@ To run the app after making code changes, the following 3 commands should be run
 
 ```
 detach("package:metainsight", unload = TRUE)
-devtools::install_local(path = getwd(), force = TRUE)
+pak::pak('local::.')
 metainsight::run_metainsight()
 ```
 
